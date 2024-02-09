@@ -1,0 +1,5 @@
+res://scene/4/exhibit.tscn
+res://scene/3/token.tscn
+res://scene/4/occupancy.tscn
+res://script/Global.gd
+res://scene/0/game.gd

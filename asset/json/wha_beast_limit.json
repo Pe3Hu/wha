@@ -1,0 +1,77 @@
+[
+ {
+  "rank": 1,
+  "type": "input",
+  "limits": "2,2"
+ },
+ {
+  "rank": 1,
+  "type": "input",
+  "limits": "1,1,1,1"
+ },
+ {
+  "rank": 1,
+  "type": "output",
+  "limits": "6"
+ },
+ {
+  "rank": 1,
+  "type": "output",
+  "limits": "3,3"
+ },
+ {
+  "rank": 1,
+  "type": "output",
+  "limits": "2,2,2"
+ },
+ {
+  "rank": 2,
+  "type": "input",
+  "limits": "5,4"
+ },
+ {
+  "rank": 2,
+  "type": "input",
+  "limits": "3,3,3"
+ },
+ {
+  "rank": 2,
+  "type": "output",
+  "limits": "6,6"
+ },
+ {
+  "rank": 2,
+  "type": "output",
+  "limits": "4,4,4"
+ },
+ {
+  "rank": 2,
+  "type": "output",
+  "limits": "3,3,3,3"
+ },
+ {
+  "rank": 3,
+  "type": "input",
+  "limits": "8,8"
+ },
+ {
+  "rank": 3,
+  "type": "input",
+  "limits": "4,4,4,4"
+ },
+ {
+  "rank": 3,
+  "type": "output",
+  "limits": "12,12"
+ },
+ {
+  "rank": 3,
+  "type": "output",
+  "limits": "8,8,8"
+ },
+ {
+  "rank": 3,
+  "type": "output",
+  "limits": "6,6,6"
+ }
+]

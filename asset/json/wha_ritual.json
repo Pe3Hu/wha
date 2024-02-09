@@ -1,0 +1,98 @@
+[
+ {
+  "index": 0,
+  "role": "purpose",
+  "input limit": 3,
+  "input type": "identical",
+  "output limit": 1,
+  "output type": "ascension"
+ },
+ {
+  "index": 1,
+  "role": "purpose",
+  "input limit": 2,
+  "input type": "identical",
+  "output limit": 2,
+  "output type": "conversion"
+ },
+ {
+  "index": 2,
+  "role": "purpose",
+  "input limit": 1,
+  "input type": "any",
+  "output limit": "2",
+  "output type": "mutation"
+ },
+ {
+  "index": 3,
+  "role": "defense",
+  "input limit": 2,
+  "input type": "aqua",
+  "output limit": 3,
+  "output type": "breakwater",
+  "output count": 1
+ },
+ {
+  "index": 4,
+  "role": "defense",
+  "input limit": 2,
+  "input type": "wind",
+  "output limit": 1,
+  "output type": "shadow",
+  "output count": 1
+ },
+ {
+  "index": 5,
+  "role": "defense",
+  "input limit": 2,
+  "input type": "fire",
+  "output limit": 2,
+  "output type": "flame",
+  "output count": 1
+ },
+ {
+  "index": 6,
+  "role": "defense",
+  "input limit": 2,
+  "input type": "earth",
+  "output limit": 4,
+  "output type": "dome",
+  "output count": 1
+ },
+ {
+  "index": 7,
+  "role": "offense",
+  "input limit": 4,
+  "input type": "aqua",
+  "output limit": 2,
+  "output type": "wave",
+  "output count": 3
+ },
+ {
+  "index": 8,
+  "role": "offense",
+  "input limit": 4,
+  "input type": "wind",
+  "output limit": 1,
+  "output type": "vortex",
+  "output count": 6
+ },
+ {
+  "index": 9,
+  "role": "offense",
+  "input limit": 4,
+  "input type": "fire",
+  "output limit": 3,
+  "output type": "heat",
+  "output count": 2
+ },
+ {
+  "index": 10,
+  "role": "offense",
+  "input limit": 4,
+  "input type": "earth",
+  "output limit": 6,
+  "output type": "meteor",
+  "output count": 1
+ }
+]
