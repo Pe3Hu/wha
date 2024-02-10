@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://cabbqfqsbexle"]
+
+[ext_resource type="PackedScene" uid="uid://cijfgbdi8yqwa" path="res://scene/3/token.tscn" id="1_ef28a"]
+[ext_resource type="Script" path="res://scene/4/effect.gd" id="2_p6do4"]
+
+[node name="Effect" instance=ExtResource("1_ef28a")]
+script = ExtResource("2_p6do4")

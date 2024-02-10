@@ -3,7 +3,7 @@
   "index": 0,
   "role": "purpose",
   "input limit": 3,
-  "input type": "identical",
+  "input type": "any",
   "output limit": 1,
   "output type": "ascension"
  },
@@ -11,7 +11,7 @@
   "index": 1,
   "role": "purpose",
   "input limit": 2,
-  "input type": "identical",
+  "input type": "any",
   "output limit": 2,
   "output type": "conversion"
  },
@@ -20,7 +20,7 @@
   "role": "purpose",
   "input limit": 1,
   "input type": "any",
-  "output limit": "2",
+  "output limit": 2,
   "output type": "mutation"
  },
  {
@@ -47,7 +47,7 @@
   "input limit": 2,
   "input type": "fire",
   "output limit": 2,
-  "output type": "flame",
+  "output type": "heat",
   "output count": 1
  },
  {
@@ -83,7 +83,7 @@
   "input limit": 4,
   "input type": "fire",
   "output limit": 3,
-  "output type": "heat",
+  "output type": "flame",
   "output count": 2
  },
  {

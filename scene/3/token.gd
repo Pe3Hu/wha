@@ -4,7 +4,7 @@ extends MarginContainer
 #region vars
 @onready var bg = $BG
 @onready var designation = $Designation
-@onready var limit = $Numbers/HBox/Limit
+@onready var limit = $Limit
 
 var proprietor = null
 var type = null
@@ -26,7 +26,8 @@ func init_basic_setting(input_: Dictionary) -> void:
 	input.type = type
 	input.subtype = subtype
 	designation.set_attributes(input)
-	designation.custom_minimum_size = Vector2(Global.vec.size.token)
+	custom_minimum_size = Vector2(Global.vec.size.token)
+	designation.custom_minimum_size = custom_minimum_size - Global.vec.size.limit
 	
 	input.type = "number"
 	input.subtype = 1
@@ -35,14 +36,13 @@ func init_basic_setting(input_: Dictionary) -> void:
 		input.subtype = input_.limit
 	
 	limit.set_attributes(input)
-	limit.custom_minimum_size = Vector2()
+	limit.custom_minimum_size = Vector2(Global.vec.size.limit)
+	
+	init_bg()
 	
 	match type:
 		"element":
-			init_bg()
 			set_bg_color(Global.color.element[subtype])
-
-
 
 
 func init_bg() -> void:

@@ -1,5 +1,15 @@
 res://scene/4/exhibit.tscn
 res://scene/3/token.tscn
 res://scene/4/occupancy.tscn
+res://scene/4/gallery.gd
 res://script/Global.gd
-res://scene/0/game.gd
+res://scene/4/exhibit.gd
+res://scene/4/gallery.tscn
+res://scene/4/occupancy.gd
+res://scene/3/token.gd
+res://scene/0/icon.gd
+res://scene/0/icon.tscn
+res://asset/json/wha_ritual.json
+res://scene/4/effect.tscn
+res://scene/4/effect.gd
+res://asset/json/wha_enchantment_effect.json

@@ -4,7 +4,7 @@ extends MarginContainer
 #region vars
 @onready var bg = $BG
 @onready var number = $Number
-@onready var str = $String
+@onready var text = $Text
 @onready var textureRect = $TextureRect
 
 var type = null
@@ -35,8 +35,8 @@ func init_basic_setting() -> void:
 			set_number(subtype)
 		"string":
 			textureRect.visible = false
-			str.visible = true
-			str.text = subtype
+			text.visible = true
+			text.text = subtype
 			custom_minimum_size = Vector2(Global.vec.size.number)
 
 
@@ -80,7 +80,7 @@ func change_number(value_) -> void:
 
 func set_number(value_) -> void:
 	subtype = value_
-	var value = subtype + 0
+	var value = float(subtype) + 0
 	
 	match typeof(value_):
 		TYPE_INT:

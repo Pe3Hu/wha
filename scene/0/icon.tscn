@@ -36,7 +36,7 @@ theme_override_fonts/font = ExtResource("2_k4dsr")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="String" type="Label" parent="."]
+[node name="Text" type="Label" parent="."]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 4

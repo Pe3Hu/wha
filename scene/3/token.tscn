@@ -29,17 +29,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_7paps")
 [node name="Designation" parent="." instance=ExtResource("2_xmt25")]
 layout_mode = 2
 
-[node name="Numbers" type="MarginContainer" parent="."]
+[node name="Limit" parent="." instance=ExtResource("2_xmt25")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="HBox" type="HBoxContainer" parent="Numbers"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/separation = 0
-alignment = 1
-
-[node name="Limit" parent="Numbers/HBox" instance=ExtResource("2_xmt25")]
-layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0

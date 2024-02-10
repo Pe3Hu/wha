@@ -22,7 +22,6 @@ size_flags_vertical = 4
 script = ExtResource("1_4r8lg")
 
 [node name="BG" type="Panel" parent="."]
-visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7paps")
 
@@ -62,6 +61,11 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 
 [node name="Gifts" type="VBoxContainer" parent="Gifts"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Effects" type="VBoxContainer" parent="Gifts"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1

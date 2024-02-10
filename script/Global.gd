@@ -24,6 +24,7 @@ func _ready() -> void:
 
 func init_arr() -> void:
 	arr.element = ["aqua", "wind", "fire", "earth"]
+	arr.field = ["ore", "seed"]
 
 
 func init_num() -> void:
@@ -32,6 +33,7 @@ func init_num() -> void:
 
 func init_dict() -> void:
 	init_neighbor()
+	init_inverse()
 	init_ritual()
 	init_enchantment()
 	init_beast()
@@ -84,9 +86,21 @@ func init_neighbor() -> void:
 	]
 
 
+func init_inverse() -> void:
+	dict.element = {}
+	dict.element.inverse = {}
+	var n = arr.element.size()
+	var unuseds = []
+	
+	for element in arr.element:
+		var index = (arr.element.find(element) + n / 2) % n
+		dict.element.inverse[element] = arr.element[index]
+
+
 func init_ritual() -> void:
 	dict.ritual = {}
 	dict.ritual.index = {}
+	dict.ritual.role = {}
 	
 	var path = "res://asset/json/wha_ritual.json"
 	var array = load_data(path)
@@ -95,6 +109,9 @@ func init_ritual() -> void:
 		var data = {}
 		
 		for key in ritual:
+			if typeof(ritual[key]) == TYPE_FLOAT:
+				ritual[key] = int(ritual[key])
+			
 			if key != "index":
 				var words = key.split(" ")
 				
@@ -106,15 +123,19 @@ func init_ritual() -> void:
 				else:
 					data[key] = ritual[key]
 		
+		if !dict.ritual.role.has(ritual.role):
+			dict.ritual.role[ritual.role] = []
+		
+		dict.ritual.role[ritual.role].append(ritual.index)
 		dict.ritual.index[ritual.index] = data
 
 
 func init_enchantment() -> void:
 	dict.enchantment = {}
-	dict.enchantment.index = {}
-	dict.enchantment.index.limit = {}
-	dict.enchantment.index.effect = {}
+	dict.enchantment.limit = {}
+	dict.enchantment.effect = {}
 	
+	var exceptions = ["index", "role", "rank"]
 	var path = "res://asset/json/wha_enchantment_limit.json"
 	var array = load_data(path)
 	
@@ -122,7 +143,10 @@ func init_enchantment() -> void:
 		var data = {}
 		
 		for key in enchantment:
-			if key != "index":
+			if typeof(enchantment[key]) == TYPE_FLOAT:
+				enchantment[key] = int(enchantment[key])
+			
+			if !exceptions.has(key):
 				data[key] = enchantment[key]
 				
 				if key == "limits":
@@ -137,7 +161,13 @@ func init_enchantment() -> void:
 							for limit in enchantment[key].split(","):
 								data.limits.append(int(limit))
 		
-		dict.enchantment.index.limit[enchantment.index] = data
+		if !dict.enchantment.limit.has(enchantment.rank):
+			dict.enchantment.limit[enchantment.rank] = {}
+		
+		if !dict.enchantment.limit[enchantment.rank].has(enchantment.role):
+			dict.enchantment.limit[enchantment.rank][enchantment.role] = []
+		
+		dict.enchantment.limit[enchantment.rank][enchantment.role].append(data)
 	
 	path = "res://asset/json/wha_enchantment_effect.json"
 	array = load_data(path)
@@ -146,10 +176,19 @@ func init_enchantment() -> void:
 		var data = {}
 		
 		for key in enchantment:
-			if key != "index":
+			if typeof(enchantment[key]) == TYPE_FLOAT:
+				enchantment[key] = int(enchantment[key])
+			
+			if !exceptions.has(key):
 				data[key] = enchantment[key]
 		
-		dict.enchantment.index.effect[enchantment.index] = data
+		if !dict.enchantment.effect.has(enchantment.rank):
+			dict.enchantment.effect[enchantment.rank] = {}
+		
+		if !dict.enchantment.effect[enchantment.rank].has(enchantment.role):
+			dict.enchantment.effect[enchantment.rank][enchantment.role] = []
+		
+		dict.enchantment.effect[enchantment.rank][enchantment.role].append(data)
 
 
 func init_beast() -> void:
@@ -161,6 +200,7 @@ func init_beast() -> void:
 	
 	for beast in array:
 		var limits = []
+		beast.rank = int(beast.rank)
 		
 		for limit in beast.limits.split(","):
 			limits.append(int(limit))
@@ -182,6 +222,7 @@ func init_field() -> void:
 	var array = load_data(path)
 	
 	for field in array:
+		field.rank = int(field.rank)
 		var limits = []
 		
 		for limit in field.limits.split(","):
@@ -211,6 +252,7 @@ func init_scene() -> void:
 	scene.gallery = load("res://scene/4/gallery.tscn")
 	scene.exhibit = load("res://scene/4/exhibit.tscn")
 	scene.occupancy = load("res://scene/4/occupancy.tscn")
+	scene.effect = load("res://scene/4/effect.tscn")
 	
 
 
@@ -222,9 +264,9 @@ func init_vec():
 	vec.size.sixteen = Vector2(16, 16)
 	
 	vec.size.bar = Vector2(120, 12)
-	vec.size.token = Vector2(40, 40)
-	vec.size.occupancy = Vector2(vec.size.token)
-	vec.size.exhibit = Vector2(vec.size.token.x * 3, vec.size.token.y * 8)
+	vec.size.limit = Vector2(vec.size.sixteen)
+	vec.size.token = Vector2(vec.size.limit * 3.5)
+	vec.size.exhibit = Vector2(vec.size.token.x * 3, vec.size.token.y * 6)
 	
 	init_window_size()
 
@@ -238,24 +280,33 @@ func init_window_size():
 
 func init_color():
 	var h = 360.0
+	var s = 0.3
+	var v = 0.9
 	
 	color.element = {}
-	color.element.fire = Color.from_hsv(0, 0.3, 0.9)
-	color.element.earth = Color.from_hsv(30 / h, 0.3, 0.9)
-	color.element.wind = Color.from_hsv(150 / h, 0.3, 0.9)
-	color.element.aqua = Color.from_hsv(220 / h, 0.3, 0.9)
+	color.element.fire = Color.from_hsv(0, s, v)
+	color.element.earth = Color.from_hsv(30 / h, s, v)
+	color.element.wind = Color.from_hsv(150 / h, s, v)
+	color.element.aqua = Color.from_hsv(220 / h, s, v)
 	#color.element.fire = {}
-	#color.element.fire.fill = Color.from_hsv(0, 0.3, 0.9)
+	#color.element.fire.fill = Color.from_hsv(0, s, v)
 	#color.element.fire.background = Color.from_hsv(0, 0.5, 0.9)
 	#color.element.wind = {}
-	#color.element.wind.fill = Color.from_hsv(160 / h, 0.3, 0.9)
+	#color.element.wind.fill = Color.from_hsv(160 / h, s, v)
 	#color.element.wind.background = Color.from_hsv(160 / h, 0.5, 0.9)
 	#color.element.aqua = {}
-	#color.element.aqua.fill = Color.from_hsv(210 / h, 0.3, 0.9)
+	#color.element.aqua.fill = Color.from_hsv(210 / h, s, v)
 	#color.element.aqua.background = Color.from_hsv(210 / h, 0.5, 0.9)
 	#color.element.earth = {}
-	#color.element.earth.fill = Color.from_hsv(30 / h, 0.3, 0.9)
+	#color.element.earth.fill = Color.from_hsv(30 / h, s, v)
 	#color.element.earth.background = Color.from_hsv(30 / h, 0.5, 0.9)
+	
+	s = 0.0
+	v = 0.5
+	color.role = {}
+	color.role.offense = Color.from_hsv(0, s, v - 0.25)
+	color.role.purpose = Color.from_hsv(270/ h, s, v)
+	color.role.defense = Color.from_hsv(130/ h, s, v + 0.25)
 
 
 func save(path_: String, data_: String):
@@ -295,3 +346,40 @@ func get_random_key(dict_: Dictionary):
 	
 	print("!bug! index_r error in get_random_key func")
 	return null
+
+
+func get_random_elements(count_: int) -> Array:
+	var result = []
+	
+	if count_ == Global.arr.element.size():
+		result.append_array(Global.arr.element)
+		result.shuffle()
+		return result
+	
+	var options = []
+	options.append_array(Global.arr.element)
+	
+	for _i in count_:
+		var element = options.pick_random()
+		options.erase(element)
+		result.append(element)
+	
+	return result
+
+
+func get_inverse_elements(elements_: Array) -> Array:
+	var result = []
+	result.append_array(elements_)
+	result.reverse()
+	
+	for element in result:
+		var inverse = dict.element.inverse[element]
+		
+		if !result.has(inverse):
+			result.push_front(inverse)
+	
+	for element in arr.element:
+		if !result.has(element):
+			result.push_front(element)
+	
+	return result

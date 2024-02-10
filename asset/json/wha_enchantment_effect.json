@@ -22,7 +22,7 @@
   "role": "defense",
   "rank": 1,
   "element": "fire",
-  "effect": "flame",
+  "effect": "heat",
   "limit": 4,
   "count": 1
  },
@@ -58,7 +58,7 @@
   "role": "offense",
   "rank": 1,
   "element": "fire",
-  "effect": "heat",
+  "effect": "flame",
   "limit": 3,
   "count": 4
  },
