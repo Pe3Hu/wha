@@ -4,10 +4,10 @@ extends MarginContainer
 #region vars
 @onready var occupancies = $Occupancies/Occupancies
 @onready var productions = $Productions/Productions
-@onready var sacrifices = $Sacrifices/Sacrifices
-@onready var gifts = $Gifts/Gifts
-@onready var effects = $Gifts/Effects
-@onready var threats = $Gifts/Threats
+@onready var sacrifices = $Sacrifices/VBox/Sacrifices
+@onready var threats = $Sacrifices/VBox/Threats
+@onready var gifts = $Gifts/VBox/Gifts
+@onready var effects = $Gifts/VBox/Effects
 
 var gallery = null
 var rank = null
@@ -83,7 +83,6 @@ func init_gifts(input_: Dictionary) -> void:
 				
 				if count != null:
 					token.count.set_number(count)
-				
 
 
 func init_sacrifices() -> void:
@@ -103,6 +102,15 @@ func init_sacrifices() -> void:
 	match type:
 		"treasure":
 			token.set_limit(rank * 2)
+		"curse":
+			token.set_limit(rank * 2 + 1)
+			
+			input.type = "threat"
+			input.subtype = "curse"
+			
+			token = Global.scene.token.instantiate()
+			threats.add_child(token)
+			token.set_attributes(input)
 
 
 func init_productions() -> void:

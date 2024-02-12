@@ -5,6 +5,7 @@ extends MarginContainer
 @onready var workshop = $HBox/Workshop
 
 var guild = null
+var exposition = null
 #endregion
 
 

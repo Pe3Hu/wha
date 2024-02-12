@@ -50,7 +50,17 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 0
 
-[node name="Sacrifices" type="VBoxContainer" parent="Sacrifices"]
+[node name="VBox" type="VBoxContainer" parent="Sacrifices"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Sacrifices" type="VBoxContainer" parent="Sacrifices/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Threats" type="VBoxContainer" parent="Sacrifices/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
@@ -60,17 +70,17 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 
-[node name="Gifts" type="VBoxContainer" parent="Gifts"]
+[node name="VBox" type="VBoxContainer" parent="Gifts"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Effects" type="VBoxContainer" parent="Gifts"]
+[node name="Gifts" type="VBoxContainer" parent="Gifts/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Threats" type="VBoxContainer" parent="Gifts"]
+[node name="Effects" type="VBoxContainer" parent="Gifts/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1

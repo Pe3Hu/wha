@@ -26,10 +26,15 @@ visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7paps")
 
-[node name="HBox" type="HBoxContainer" parent="."]
+[node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
 alignment = 1
 
-[node name="Galleries" type="VBoxContainer" parent="HBox"]
+[node name="Collectors" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
+alignment = 1
+
+[node name="Galleries" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
 alignment = 1

@@ -24,7 +24,8 @@ func _ready() -> void:
 
 func init_arr() -> void:
 	arr.element = ["aqua", "wind", "fire", "earth"]
-	arr.field = ["ore", "seed"]
+	arr.field = ["ore", "seed", "gas"]
+	arr.enchantment = ["defense", "offense"]
 
 
 func init_num() -> void:
@@ -38,6 +39,7 @@ func init_dict() -> void:
 	init_enchantment()
 	init_beast()
 	init_field()
+	init_pack()
 
 
 func init_neighbor() -> void:
@@ -135,7 +137,7 @@ func init_enchantment() -> void:
 	dict.enchantment.limit = {}
 	dict.enchantment.effect = {}
 	
-	var exceptions = ["index", "role", "rank"]
+	var exceptions = ["index", "role", "rank", "element"]
 	var path = "res://asset/json/wha_enchantment_limit.json"
 	var array = load_data(path)
 	
@@ -186,9 +188,12 @@ func init_enchantment() -> void:
 			dict.enchantment.effect[enchantment.rank] = {}
 		
 		if !dict.enchantment.effect[enchantment.rank].has(enchantment.role):
-			dict.enchantment.effect[enchantment.rank][enchantment.role] = []
+			dict.enchantment.effect[enchantment.rank][enchantment.role] = {}
 		
-		dict.enchantment.effect[enchantment.rank][enchantment.role].append(data)
+		if !dict.enchantment.effect[enchantment.rank].has(enchantment.element):
+			dict.enchantment.effect[enchantment.rank][enchantment.role][enchantment.element] = []
+		
+		dict.enchantment.effect[enchantment.rank][enchantment.role][enchantment.element].append(data)
 
 
 func init_beast() -> void:
@@ -234,6 +239,58 @@ func init_field() -> void:
 		dict.field.rank[field.rank][limits] = field.weight
 
 
+func init_pack() -> void:
+	dict.pack = {}
+	dict.pack.type = {}
+	dict.pack.element = {}
+	
+	for element in arr.element:
+		dict.pack.element[element] = {}
+	
+	#for key in dict.pack:
+	#	dict.pack[key]["any"] = {}
+	
+	var path = "res://asset/json/wha_pack.json"
+	var array = load_data(path)
+	
+	for pack in array:
+		for key in pack:
+			if typeof(pack[key]) == TYPE_FLOAT:
+				pack[key] = int(pack[key])
+		
+		
+		if !dict.pack.type.has(pack.type):
+			dict.pack.type[pack.type] = {}
+		
+		for element in arr.element:
+			#if !dict.pack.element[element].has(pack.type):
+				#dict.pack.element[element][pack.type] = {}
+			var data = {}
+			data.type = pack.type
+			data.subtype = pack.subtype
+			dict.pack.element[element][data] = pack[element]
+			#dict.pack.element["any"][data] = pack[element]
+			
+			data = {}
+			data.element = element
+			data.subtype = pack.subtype
+			dict.pack.type[pack.type][data] = pack[element]
+			#dict.pack.type["any"][data] = pack[element]
+	
+	dict.criterion = {}
+	dict.criterion.type = {}
+	#dict.criterion.type["any"] = 5
+	dict.criterion.type["field"] = 3
+	dict.criterion.type["enchantment"] = 2
+	
+	dict.criterion.element = {}
+	#dict.criterion.element["any"] = 4
+	dict.criterion.element["aqua"] = 1
+	dict.criterion.element["wind"] = 1
+	dict.criterion.element["fire"] = 1
+	dict.criterion.element["earth"] = 1
+
+
 func init_node() -> void:
 	node.game = get_node("/root/Game")
 
@@ -253,7 +310,6 @@ func init_scene() -> void:
 	scene.exhibit = load("res://scene/4/exhibit.tscn")
 	scene.occupancy = load("res://scene/4/occupancy.tscn")
 	scene.effect = load("res://scene/4/effect.tscn")
-	
 
 
 func init_vec():
@@ -383,3 +439,34 @@ func get_inverse_elements(elements_: Array) -> Array:
 			result.push_front(element)
 	
 	return result
+
+
+func add_random_elements(elements_: Array, count_: int) -> void:
+	if count_ > elements_.size():
+		var options = []
+		options.append_array(Global.arr.element)
+		
+		for element in elements_:
+			options.erase(element)
+		
+		while count_ > elements_.size():
+			var element = options.pick_random()
+			options.erase(element)
+			elements_.append(element)
+
+
+func add_field_elements_based_on_subtype(elements_: Array, count_: int, subtype_: String) -> void:
+	if count_ > elements_.size():
+		var options = {}
+		
+		for element in arr.element:
+			if !elements_.has(element):
+				var data = {}
+				data.element = element
+				data.subtype = subtype_
+				options[element] = dict.pack.type["field"][data]
+		
+		while count_ > elements_.size():
+			var element = get_random_key(options)
+			options.erase(element)
+			elements_.append(element)

@@ -1,0 +1,42 @@
+[
+ {
+  "type": "field",
+  "subtype": "ore",
+  "aqua": 3,
+  "wind": 1,
+  "fire": 5,
+  "earth": 7
+ },
+ {
+  "type": "field",
+  "subtype": "seed",
+  "aqua": 7,
+  "wind": 3,
+  "fire": 1,
+  "earth": 5
+ },
+ {
+  "type": "field",
+  "subtype": "gas",
+  "aqua": 3,
+  "wind": 7,
+  "fire": 5,
+  "earth": 1
+ },
+ {
+  "type": "enchantment",
+  "subtype": "defense",
+  "aqua": 6,
+  "wind": 4,
+  "fire": 5,
+  "earth": 9
+ },
+ {
+  "type": "enchantment",
+  "subtype": "offense",
+  "aqua": 5,
+  "wind": 6,
+  "fire": 9,
+  "earth": 4
+ }
+]
