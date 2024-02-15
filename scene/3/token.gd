@@ -7,6 +7,7 @@ extends MarginContainer
 @onready var limit = $Limit
 
 var proprietor = null
+var gist = null
 var type = null
 var subtype = null
 #endregion
@@ -15,6 +16,7 @@ var subtype = null
 #region init
 func set_attributes(input_: Dictionary) -> void:
 	proprietor = input_.proprietor
+	#gist = input_.gist
 	type = input_.type
 	subtype = input_.subtype
 	
@@ -41,7 +43,7 @@ func init_basic_setting(input_: Dictionary) -> void:
 	init_bg()
 	
 	match type:
-		"element":
+		"essence":
 			set_bg_color(Global.color.element[subtype])
 
 
@@ -58,14 +60,14 @@ func set_bg_color(color_: Color) -> void:
 
 
 #region limit treatment
-func get_limit() -> int:
+func get_limit() -> Variant:
 	return limit.get_number()
 
 
-func change_limit(value_: int) -> void:
+func change_limit(value_: Variant) -> void:
 	limit.change_number(value_)
 
 
-func set_limit(value_: int) -> void:
+func set_limit(value_: Variant) -> void:
 	limit.set_number(value_)
 #endregion

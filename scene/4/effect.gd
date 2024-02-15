@@ -7,8 +7,6 @@ var count = null
 
 
 func _ready() -> void:
-	#custom_minimum_size = Vector2(Global.vec.size.occupancy)
-	
 	var input = {}
 	input.type = "number"
 	input.subtype = 0

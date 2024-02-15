@@ -36,5 +36,5 @@ alignment = 1
 
 [node name="Galleries" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 5
 alignment = 1

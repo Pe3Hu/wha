@@ -16,3 +16,5 @@ func _ready() -> void:
 	for guild in cradle.guilds.get_children():
 		var collector = guild.collectors.get_child(0)
 		exposition.add_collector(collector)
+	
+	exposition.make_art()

@@ -62,10 +62,11 @@ func get_number() -> Variant:
 
 func change_number(value_) -> void:
 	subtype += value_
-	var value = subtype + 0
+	var value = 0
 	
-	match typeof(value_):
+	match typeof(subtype):
 		TYPE_INT:
+			value = int(subtype)
 			var suffix = ""
 			
 			while value >= 1000:
@@ -74,7 +75,8 @@ func change_number(value_) -> void:
 			
 			number.text = str(value) + suffix
 		TYPE_FLOAT:
-			value = snapped(value, 0.01)
+			value = float(subtype)
+			value = snapped(value, 0.1)
 			number.text = str(value)
 
 
@@ -92,7 +94,7 @@ func set_number(value_) -> void:
 			
 			number.text = str(value) + suffix
 		TYPE_FLOAT:
-			value = snapped(value, 0.01)
+			value = snapped(value, 0.1)
 			number.text = str(value)
 #endregion
 

@@ -6,6 +6,8 @@ extends MarginContainer
 @onready var exhibits = $Exhibits
 
 var exposition = null
+var criterion = null
+var specialization = null
 #endregion
 
 
@@ -24,12 +26,19 @@ func init_basic_setting() -> void:
 
 
 func add_pack() -> void:
-	var criterion = Global.dict.criterion.keys().pick_random()#"type"
+	var datas = {}
 	
+	for gallery in exposition.galleries.get_children():
+		if gallery != self:
+			if !datas.has(gallery.criterion):
+				datas[gallery.criterion] = []
+		
+			datas[gallery.criterion].append(gallery.specialization)
+	
+	roll_specialization(datas)
 	var input = {}
-	var options = Global.dict.criterion[criterion]
-	input[criterion] = Global.get_random_key(options)#"field"
-	options = Global.dict.pack[criterion][input[criterion]]
+	input[criterion] = specialization
+	var options = Global.dict.pack[criterion][input[criterion]]
 	print([criterion, input[criterion]])
 	
 	for _i in 3:
@@ -39,6 +48,28 @@ func add_pack() -> void:
 			input[key] = description[key]
 		
 		add_exhibit(input)
+
+
+func roll_specialization(datas_: Dictionary) -> void:
+	if datas_.keys().is_empty():
+		criterion = Global.dict.criterion.keys().pick_random()
+		var options = Global.dict.criterion[criterion]
+		specialization = Global.get_random_key(options)
+		return
+	
+	#criterion = datas_.keys().front()
+	#specialization = datas_[criterion].front()
+	var flag = true
+	
+	while flag:
+		criterion = Global.dict.criterion.keys().pick_random()
+		var a = Global.dict.criterion
+		var options = Global.dict.criterion[criterion]
+		specialization = Global.get_random_key(options)
+		flag = datas_.has(criterion)
+		
+		if flag:
+			flag = datas_[criterion].has(specialization)
 
 
 func add_exhibit(input_: Dictionary) -> void:

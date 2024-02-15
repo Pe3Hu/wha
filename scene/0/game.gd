@@ -17,7 +17,7 @@ func _input(event) -> void:
 		match event.keycode:
 			KEY_SPACE:
 				if event.is_pressed() && !event.is_echo():
-					pass
+					sketch.wildlands.museums.get_child(0).expositions.get_child(0).collectors.get_child(0).pick_gallery()
 
 
 func _process(delta_) -> void:

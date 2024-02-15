@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://b6xt38h3tpi5k"]
+[gd_scene load_steps=5 format=3 uid="uid://b6xt38h3tpi5k"]
 
 [ext_resource type="Script" path="res://scene/1/collector.gd" id="1_l8sef"]
 [ext_resource type="PackedScene" uid="uid://by6n2juyeg4qi" path="res://scene/3/workshop.tscn" id="2_7pdmr"]
+[ext_resource type="PackedScene" uid="uid://bfqdscp7cy8a2" path="res://scene/3/domain.tscn" id="3_gwjkp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 
@@ -27,9 +28,12 @@ visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7paps")
 
-[node name="HBox" type="HBoxContainer" parent="."]
+[node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
 alignment = 1
 
-[node name="Workshop" parent="HBox" instance=ExtResource("2_7pdmr")]
+[node name="Workshop" parent="VBox" instance=ExtResource("2_7pdmr")]
+layout_mode = 2
+
+[node name="Domain" parent="VBox" instance=ExtResource("3_gwjkp")]
 layout_mode = 2

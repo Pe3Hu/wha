@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://wvtrityl05ur"]
+[gd_scene load_steps=4 format=3 uid="uid://wvtrityl05ur"]
 
 [ext_resource type="Script" path="res://scene/4/exhibit.gd" id="1_4r8lg"]
+[ext_resource type="PackedScene" uid="uid://dmpthx48srm8l" path="res://scene/4/score.tscn" id="2_jm1r3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 
@@ -25,12 +26,12 @@ script = ExtResource("1_4r8lg")
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7paps")
 
-[node name="Occupancies" type="MarginContainer" parent="."]
+[node name="Requirements" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="Occupancies" type="VBoxContainer" parent="Occupancies"]
+[node name="Essences" type="VBoxContainer" parent="Requirements"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
@@ -40,7 +41,17 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 
-[node name="Productions" type="VBoxContainer" parent="Productions"]
+[node name="VBox" type="VBoxContainer" parent="Productions"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Essences" type="VBoxContainer" parent="Productions/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Effects" type="VBoxContainer" parent="Productions/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
@@ -55,7 +66,7 @@ layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Sacrifices" type="VBoxContainer" parent="Sacrifices/VBox"]
+[node name="Essences" type="VBoxContainer" parent="Sacrifices/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
@@ -75,7 +86,7 @@ layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Gifts" type="VBoxContainer" parent="Gifts/VBox"]
+[node name="Essences" type="VBoxContainer" parent="Gifts/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
@@ -84,3 +95,6 @@ alignment = 1
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
+
+[node name="Score" parent="." instance=ExtResource("2_jm1r3")]
+layout_mode = 2

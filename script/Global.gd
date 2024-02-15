@@ -24,6 +24,8 @@ func _ready() -> void:
 
 func init_arr() -> void:
 	arr.element = ["aqua", "wind", "fire", "earth"]
+	arr.essence = []
+	arr.essence.append_array(arr.element)
 	arr.field = ["ore", "seed", "gas"]
 	arr.enchantment = ["defense", "offense"]
 
@@ -97,6 +99,15 @@ func init_inverse() -> void:
 	for element in arr.element:
 		var index = (arr.element.find(element) + n / 2) % n
 		dict.element.inverse[element] = arr.element[index]
+	
+	
+	dict.relevance = {}
+	dict.relevance["offense"] = 4
+	dict.relevance["defense"] = 2
+	dict.relevance["purpose"] = 1
+	dict.relevance["essence"] = 1
+	dict.relevance["production"] = 3
+	dict.relevance["gift"] = 1
 
 
 func init_ritual() -> void:
@@ -308,8 +319,8 @@ func init_scene() -> void:
 	
 	scene.gallery = load("res://scene/4/gallery.tscn")
 	scene.exhibit = load("res://scene/4/exhibit.tscn")
-	scene.occupancy = load("res://scene/4/occupancy.tscn")
 	scene.effect = load("res://scene/4/effect.tscn")
+	scene.score = load("res://scene/4/score.tscn")
 
 
 func init_vec():
@@ -323,6 +334,8 @@ func init_vec():
 	vec.size.limit = Vector2(vec.size.sixteen)
 	vec.size.token = Vector2(vec.size.limit * 3.5)
 	vec.size.exhibit = Vector2(vec.size.token.x * 3, vec.size.token.y * 6)
+	vec.size.utilization = Vector2(vec.size.token.x, vec.size.token.y * 2)
+	vec.size.score = Vector2(vec.size.token * 0.75)
 	
 	init_window_size()
 

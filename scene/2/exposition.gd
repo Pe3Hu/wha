@@ -17,7 +17,6 @@ func set_attributes(input_: Dictionary) -> void:
 
 
 func init_basic_setting() -> void:
-	
 	rolls_galleries()
 
 
@@ -48,4 +47,15 @@ func add_collector(collector_: MarginContainer) -> void:
 	collector_.exposition = self
 	collector_.guild.collectors.remove_child(collector_)
 	collectors.add_child(collector_)
+
+
+func make_art() -> void:
+	var collector = collectors.get_child(0)
+	
+	#for _i in galleries.get_child_count():
+		#collector.pick_gallery()
+		#pass
+	
+	for gallery in galleries.get_children():
+		collector.score_gallery(gallery)
 #endregion
