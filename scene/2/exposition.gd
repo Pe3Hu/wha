@@ -6,6 +6,8 @@ extends MarginContainer
 @onready var galleries = $VBox/Galleries
 
 var museum = null
+var collector = null
+var phase = null
 #endregion
 
 
@@ -17,7 +19,7 @@ func set_attributes(input_: Dictionary) -> void:
 
 
 func init_basic_setting() -> void:
-	rolls_galleries()
+	pass
 
 
 func rolls_galleries() -> void:
@@ -50,12 +52,46 @@ func add_collector(collector_: MarginContainer) -> void:
 
 
 func make_art() -> void:
-	var collector = collectors.get_child(0)
+	collector = collectors.get_child(0)
 	
-	#for _i in galleries.get_child_count():
-		#collector.pick_gallery()
-		#pass
 	
-	for gallery in galleries.get_children():
-		collector.score_gallery(gallery)
+	for _i in Global.arr.phase.size():
+		follow_phase()
+
+
+func follow_phase() -> void:
+	if phase == null:
+		phase = Global.arr.phase.front()
+	else:
+		var index = Global.arr.phase.find(phase)
+		index = (index + 1) % Global.arr.phase.size()
+		phase = Global.arr.phase[index]
+		
+		if index == 0:
+			swap_collector()
+	
+	var func_name = phase+"_"+"phase"
+	call(func_name)
+
+
+func growing_phase() -> void:
+	collector.workshop.get_essence_from_increment()
+
+
+func preparing_phase() -> void:
+	collector.prepare_galleries()
+
+
+func picking_phase() -> void:
+	collector.pick_gallery()
+
+
+func filling_phase() -> void:
+	collector.workshop.get_essence_from_sacrifice()
+	collector.domain.filling_of_exhibit_requirements()
+
+
+func swap_collector() -> void:
+	var index = (collector.get_index() + 1) % collectors.get_child_count()
+	collector = collectors.get_child(index)
 #endregion

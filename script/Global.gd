@@ -28,6 +28,7 @@ func init_arr() -> void:
 	arr.essence.append_array(arr.element)
 	arr.field = ["ore", "seed", "gas"]
 	arr.enchantment = ["defense", "offense"]
+	arr.phase = ["growing", "preparing", "picking", "filling"]
 
 
 func init_num() -> void:
@@ -316,6 +317,8 @@ func init_scene() -> void:
 	scene.exposition = load("res://scene/2/exposition.tscn")
 	
 	scene.token = load("res://scene/3/token.tscn")
+	scene.requirement = load("res://scene/3/requirement.tscn")
+	scene.storage = load("res://scene/3/storage.tscn")
 	
 	scene.gallery = load("res://scene/4/gallery.tscn")
 	scene.exhibit = load("res://scene/4/exhibit.tscn")
@@ -483,3 +486,87 @@ func add_field_elements_based_on_subtype(elements_: Array, count_: int, subtype_
 			var element = get_random_key(options)
 			options.erase(element)
 			elements_.append(element)
+
+
+func get_all_substitutions(array_: Array) -> Array:
+	var result = [[]]
+	
+	for _i in array_.size():
+		var slot_options = array_[_i]
+		var next = []
+		
+		for arr_ in result:
+			for option in slot_options:
+				var pair = []
+				pair.append_array(arr_)
+				pair.append(option)
+				next.append(pair)
+		
+		result = next
+		
+		for _j in range(result.size()-1,-1,-1):
+			if result[_j].size() < _i+1:
+				result.erase(result[_j])
+	
+	return result
+
+
+func get_all_permutations(array_: Array) -> Array:
+	var result = []
+	permutation(result, array_, 0)
+	return result
+
+
+func permutation(result_: Array, array_: Array, l_: int) -> void:
+	if l_ >= array_.size():
+		var array = []
+		array.append_array(array_)
+		result_.append(array)
+		return
+	
+	permutation(result_, array_, l_+1)
+	
+	for _i in range(l_+1,array_.size(),1):
+		swap(array_, l_, _i)
+		permutation(result_, array_, l_+1)
+		swap(array_, l_, _i)
+
+
+func swap(array_: Array, i_: int, j_: int) -> void:
+	var temp = array_[i_]
+	array_[i_] = array_[j_]
+	array_[j_] = temp
+
+
+func get_all_constituents(array_: Array) -> Dictionary:
+	var constituents = {}
+	constituents[0] = []
+	constituents[1] = []
+	
+	for child in array_:
+		constituents[0].append(child)
+		constituents[1].append([child])
+	
+	for _i in array_.size()-2:
+		set_constituents_based_on_size(constituents, _i+2)
+	
+	constituents[array_.size()] = [constituents[0]]
+	constituents.erase(0)
+	return constituents
+
+
+func set_constituents_based_on_size(constituents_: Dictionary, size_: int) -> void:
+	var parents = constituents_[size_-1]
+	var indexs = []
+	constituents_[size_] = []
+	
+	for parent in parents:
+		for child in constituents_[0]:
+			if !parent.has(child):
+				var constituent = []
+				constituent.append_array(parent)
+				constituent.append(child)
+				constituent.sort_custom(func(a, b): return constituents_[0].find(a) < constituents_[0].find(b))
+				
+				if !constituents_[size_].has(constituent):
+					constituents_[size_].append(constituent)

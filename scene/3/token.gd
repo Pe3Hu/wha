@@ -70,4 +70,9 @@ func change_limit(value_: Variant) -> void:
 
 func set_limit(value_: Variant) -> void:
 	limit.set_number(value_)
+
+
+func multiply_limit(multiplier_: Variant) -> void:
+	var value = get_limit() * multiplier_
+	limit.set_number(value)
 #endregion

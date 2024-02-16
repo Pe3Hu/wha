@@ -13,6 +13,7 @@ extends MarginContainer
 @onready var score = $Score
 
 var gallery = null
+var collector = null
 var rank = null
 var type = null
 var subtype = null
@@ -40,7 +41,7 @@ func init_basic_setting(input_: Dictionary) -> void:
 	style.bg_color = Color.from_hsv(h, 0.7, 0.7)
 	bg.set("theme_override_styles/panel", style)
 	
-	init_occupancies(input_)
+	init_requirements(input_)
 	init_gifts(input_)
 	init_sacrifices()
 	init_productions()
@@ -52,7 +53,7 @@ func init_basic_setting(input_: Dictionary) -> void:
 	score.set_attributes(input)
 
 
-func init_occupancies(input_: Dictionary) -> void:
+func init_requirements(input_: Dictionary) -> void:
 	var types = ["field", "beast", "ritual", "enchantment"]
 	
 	if types.has(type):
@@ -63,9 +64,11 @@ func init_occupancies(input_: Dictionary) -> void:
 			input.subtype = elements[_i]
 			input.limit = input_.inputs[_i]
 			
-			var token = Global.scene.token.instantiate()
+			var token = Global.scene.requirement.instantiate()
 			essenceRequirements.add_child(token)
 			token.set_attributes(input)
+			
+			var a = token.get_children()
 
 
 func init_gifts(input_: Dictionary) -> void:
@@ -165,12 +168,56 @@ func set_purpose(purpose_: String) -> void:
 			"acquisition":
 				var node = get_node("Sacrifices")
 				node.visible = false
-			"utilization":
-				var node = get_node("Occupancies")
-				node.visible = false
-				node = get_node("Productions")
-				node.visible = false
-				node = get_node("Gifts")
-				node.visible = false
-				custom_minimum_size = Vector2(Global.vec.size.utilization)
+			#"utilization":
+				#var node = get_node("Requirements")
+				#node.visible = false
+				#node = get_node("Productions")
+				#node.visible = false
+				#node = get_node("Gifts")
+				#node.visible = false
+				#custom_minimum_size = Vector2(Global.vec.size.utilization)
+
+
+func duplicate_check(exhibit_: MarginContainer) -> bool:
+	var keys = ["essenceRequirements", "essenceProductions", "essenceSacrifices", "threatSacrifices", "essenceGifts", "effectGifts"]
+	
+	for key in keys:
+		var nodes = {}
+		nodes.self = get(key)
+		nodes.other = exhibit_.get(key)
+		
+		if nodes.self.get_child_count() == nodes.other.get_child_count():
+			for _i in nodes.self.get_child_count():
+				var tokens = {}
+				tokens.self = nodes.self.get_child(_i)
+				tokens.other = nodes.other.get_child(_i)
+				
+				if tokens.self.get_limit() != tokens.other.get_limit():
+					return false
+		else:
+			return false
+	
+	return true
 #endregion
+
+
+func completion_check() -> void:
+	var flag = true
+	
+	for requirement in essenceRequirements.get_children():
+		var arrear = requirement.get_limit() - requirement.get_current()
+	
+		if arrear != 0:
+			return
+	
+	closure()
+
+
+func closure() -> void:
+	for token in essenceProductions.get_children():
+		var storage = collector.workshop.get_storage_based_on_element(token.subtype)
+		var value = token.get_limit()
+		storage.change_increment(value)
+	
+	collector.domain.acquisitions.remove_child(self)
+	queue_free()

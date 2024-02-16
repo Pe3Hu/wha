@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://jpfu53k8wjun"]
+
+[ext_resource type="PackedScene" uid="uid://bh5qnullm8tky" path="res://scene/3/requirement.tscn" id="1_i83au"]
+[ext_resource type="Script" path="res://scene/3/storage.gd" id="2_tqrlh"]
+
+[node name="Storage" instance=ExtResource("1_i83au")]
+script = ExtResource("2_tqrlh")

@@ -31,13 +31,13 @@ func init_tokens() -> void:
 		"workshop":
 			subtypes = ["supply", "demand"]
 		"exhibit":
-			subtypes = ["input", "utilization", "output"]
+			subtypes = ["input", "utilization", "output", "total"]
 	
-	for subtype in subtypes:
+	for _subtype in subtypes:
 		var input = {}
 		input.proprietor = self
 		input.type = "score"
-		input.subtype = subtype
+		input.subtype = _subtype
 		
 		var token = Global.scene.token.instantiate()
 		tokens.add_child(token)

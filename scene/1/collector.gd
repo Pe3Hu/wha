@@ -7,6 +7,7 @@ extends MarginContainer
 
 var guild = null
 var exposition = null
+var hazards = []
 #endregion
 
 
@@ -25,14 +26,52 @@ func init_basic_setting() -> void:
 #endregion
 
 
-#region init
+#region score
+func prepare_galleries() -> void:
+	exposition.rolls_galleries()
+	
+	for gallery in exposition.galleries.get_children():
+		score_gallery(gallery)
+
+
+func pick_gallery() -> void:
+	var preferences = []
+	
+	for gallery in exposition.galleries.get_children():
+		var preference = {}
+		preference.pairs = gallery.pair_up()
+		preference.score = preference.pairs.front().score
+		preference.gallery = gallery
+		preferences.append(preference)
+	
+	preferences.sort_custom(func(a, b): return a.score > b.score)
+	
+	for _i in range(preferences.size()-1, -1, -1):
+		var preference = preferences[_i]
+		
+		if preference.score != preferences.front().score:
+			preferences.erase(preference)
+	
+	var _preference = preferences.pick_random()
+	var pair = _preference.pairs.pick_random()
+	var purposes = {}
+	purposes["utilization"] = "utilization"
+	purposes["total"] = "acquisition"
+	
+	for type in purposes:
+		var exhibit = pair[type]
+		var purpose = purposes[type]
+		domain.add_exhibit_as_purpose(exhibit, purpose)
+		exhibit.collector = self
+
+
 func score_gallery(gallery_: MarginContainer) -> void:
 	for exhibit in gallery_.exhibits.get_children():
 		score_exhibit(exhibit)
 
 
 func score_exhibit(exhibit_: MarginContainer) -> void:
-	var subtypes = ["input", "utilization", "output"]
+	var subtypes = ["input", "utilization", "output", "total"]
 	
 	for subtype in subtypes:
 		var token = exhibit_.score.get_token_based_on_subtype(subtype)
@@ -41,9 +80,9 @@ func score_exhibit(exhibit_: MarginContainer) -> void:
 		match subtype:
 			"input":
 				for essence in exhibit_.essenceRequirements.get_children():
-					token.change_limit(-essence.get_limit())
-					var storage = workshop.get_token_based_on_type_and_element("storage", essence.subtype)
-					token.change_limit(storage.get_limit())
+					var storage = workshop.get_storage_based_on_element(essence.subtype)
+					var value = min(storage.get_current() -essence.get_limit(), 0)
+					token.change_limit(value)
 			"utilization":
 				for essence in exhibit_.essenceSacrifices.get_children():
 					var score = workshop.get_score_based_on_element(essence.subtype)
@@ -61,25 +100,28 @@ func score_exhibit(exhibit_: MarginContainer) -> void:
 				
 				for effect in exhibit_.effectProductions.get_children():
 					var value = (Global.dict.relevance["production"] * Global.dict.relevance[effect.type] - 0.0) * effect.get_limit()
+					
+					if hazards.is_empty() and effect.type == "defense":
+						value = 0
+					
 					token.change_limit(value)
-
-
-func pick_gallery() -> void:
-	var options = []
-	options.append_array(exposition.galleries.get_children())
-	var gallery = options.front()
-	exposition.galleries.remove_child(gallery)
-	
-	while gallery.exhibits.get_child_count() > 0:
-		var exhibit = gallery.exhibits.get_child(0)
-		var purpose = null
-		
-		if gallery.exhibits.get_child_count() == 3:
-			purpose = "acquisition"
-		else:
-			purpose = "utilization"
-		
-		domain.add_exhibit_as_purpose(exhibit, purpose)
-	
-	gallery.queue_free()
+			"total":
+				for essence in exhibit_.essenceRequirements.get_children():
+					var multiplier = 1
+					
+					if essence.subtype == workshop.repulsion:
+						multiplier = -1
+					if essence.subtype == workshop.affinity:
+						multiplier = 2
+					
+					var value = multiplier * essence.get_limit()
+					token.change_limit(value)
+				
+				var multiplier = exhibit_.score.get_token_based_on_subtype("output").get_limit()
+				
+				if multiplier != 0:
+					multiplier = 1.0 / multiplier
+					token.multiply_limit(multiplier)
+				else:
+					token.set_limit(-99)
 #endregion

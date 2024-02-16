@@ -5,7 +5,6 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 
 [node name="Domain" type="MarginContainer"]
-visible = false
 custom_minimum_size = Vector2(5, 5)
 anchors_preset = 8
 anchor_left = 0.5
@@ -26,17 +25,17 @@ script = ExtResource("1_rccc8")
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7paps")
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="HBox" type="HBoxContainer" parent="."]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Utilizations" type="HBoxContainer" parent="VBox"]
+[node name="Utilizations" type="GridContainer" parent="HBox"]
 layout_mode = 2
-theme_override_constants/separation = 0
-alignment = 1
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
 
-[node name="Acquisitions" type="HBoxContainer" parent="VBox"]
+[node name="Acquisitions" type="HBoxContainer" parent="HBox"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1

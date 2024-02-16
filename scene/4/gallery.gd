@@ -39,9 +39,10 @@ func add_pack() -> void:
 	var input = {}
 	input[criterion] = specialization
 	var options = Global.dict.pack[criterion][input[criterion]]
-	print([criterion, input[criterion]])
+	#print([criterion, input[criterion]])
+	var n = 3
 	
-	for _i in 3:
+	while exhibits.get_child_count() < n:
 		var description = Global.get_random_key(options)
 		#print(description)
 		for key in description:
@@ -63,7 +64,6 @@ func roll_specialization(datas_: Dictionary) -> void:
 	
 	while flag:
 		criterion = Global.dict.criterion.keys().pick_random()
-		var a = Global.dict.criterion
 		var options = Global.dict.criterion[criterion]
 		specialization = Global.get_random_key(options)
 		flag = datas_.has(criterion)
@@ -127,4 +127,51 @@ func add_exhibit(input_: Dictionary) -> void:
 	var exhibit = Global.scene.exhibit.instantiate()
 	exhibits.add_child(exhibit)
 	exhibit.set_attributes(input_)
+	duplicate_recycling()
+
+
+func duplicate_recycling() -> void:
+	if exhibits.get_child_count() == 1:
+		return
+	
+	var child = exhibits.get_child(exhibits.get_child_count() - 1)
+	var parents = []
+	parents.append_array(exhibits.get_children())
+	parents.erase(child)
+	
+	for parent in parents:
+		if !child.duplicate_check(parent):
+			exhibits.remove_child(child)
+			child.queue_free()
+			return
+
+
+func pair_up() -> Array:
+	var pairs = []
+	var types = [["total", "utilization"], ["utilization", "total"]]
+	var constituents = Global.get_all_constituents(exhibits.get_children())
+	
+	for constituent in constituents[2]:
+		for _types in types:
+			var pair = {}
+			pair.score = 0
+			
+			for _i in 2:
+				var type = _types[_i]
+				var exhibit = constituent[_i]
+				pair[type] = exhibit
+				var token = exhibit.score.get_token_based_on_subtype(type)
+				pair.score += token.get_limit()
+			
+			pairs.append(pair)
+	
+	pairs.sort_custom(func(a, b): return a.score > b.score)
+	
+	for _i in range(pairs.size()-1, -1, -1):
+		var pair = pairs[_i]
+		
+		if pair.score != pairs.front().score:
+			pairs.erase(pair)
+	
+	return pairs
 #endregion
