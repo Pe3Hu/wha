@@ -5,7 +5,7 @@ extends MarginContainer
 @onready var storages = $VBox/Storages
 @onready var scores = $VBox/Scores
 
-var colletor = null
+var collector = null
 var domain = null
 var affinity = null
 var repulsion = null
@@ -14,13 +14,13 @@ var repulsion = null
 
 #region init
 func set_attributes(input_: Dictionary) -> void:
-	colletor = input_.colletor
+	collector = input_.collector
 	
 	init_basic_setting()
 
 
 func init_basic_setting() -> void:
-	domain = colletor.domain
+	domain = collector.domain
 	init_storages()
 	roll_affinity()
 

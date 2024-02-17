@@ -6,7 +6,8 @@
   "element": "aqua",
   "effect": "breakwater",
   "limit": 2,
-  "count": 3
+  "count": 3,
+  "power": 6
  },
  {
   "index": 1,
@@ -15,7 +16,8 @@
   "element": "wind",
   "effect": "shadow",
   "limit": 1,
-  "count": 2
+  "count": 2,
+  "power": 6
  },
  {
   "index": 2,
@@ -24,7 +26,8 @@
   "element": "fire",
   "effect": "heat",
   "limit": 4,
-  "count": 1
+  "count": 1,
+  "power": 6
  },
  {
   "index": 3,
@@ -33,7 +36,8 @@
   "element": "earth",
   "effect": "dome",
   "limit": 8,
-  "count": 1
+  "count": 1,
+  "power": 6
  },
  {
   "index": 4,
@@ -42,7 +46,8 @@
   "element": "aqua",
   "effect": "wave",
   "limit": 4,
-  "count": 3
+  "count": 3,
+  "power": 12
  },
  {
   "index": 5,
@@ -51,7 +56,8 @@
   "element": "wind",
   "effect": "vortex",
   "limit": 2,
-  "count": 6
+  "count": 6,
+  "power": 12
  },
  {
   "index": 6,
@@ -60,7 +66,8 @@
   "element": "fire",
   "effect": "flame",
   "limit": 3,
-  "count": 4
+  "count": 4,
+  "power": 12
  },
  {
   "index": 7,
@@ -68,7 +75,168 @@
   "rank": 1,
   "element": "earth",
   "effect": "meteor",
+  "limit": 6,
+  "count": 2,
+  "power": 12
+ },
+ {
+  "index": 8,
+  "role": "defense",
+  "rank": 2,
+  "element": "aqua",
+  "effect": "breakwater",
+  "limit": 3,
+  "count": 3,
+  "power": 9
+ },
+ {
+  "index": 9,
+  "role": "defense",
+  "rank": 2,
+  "element": "wind",
+  "effect": "shadow",
+  "limit": 1,
+  "count": 3,
+  "power": 9
+ },
+ {
+  "index": 10,
+  "role": "defense",
+  "rank": 2,
+  "element": "fire",
+  "effect": "heat",
+  "limit": 3,
+  "count": 2,
+  "power": 9
+ },
+ {
+  "index": 11,
+  "role": "defense",
+  "rank": 2,
+  "element": "earth",
+  "effect": "dome",
   "limit": 12,
-  "count": 1
+  "count": 1,
+  "power": 9
+ },
+ {
+  "index": 12,
+  "role": "offense",
+  "rank": 2,
+  "element": "aqua",
+  "effect": "wave",
+  "limit": 6,
+  "count": 3,
+  "power": 18
+ },
+ {
+  "index": 13,
+  "role": "offense",
+  "rank": 2,
+  "element": "wind",
+  "effect": "vortex",
+  "limit": 2,
+  "count": 9,
+  "power": 18
+ },
+ {
+  "index": 14,
+  "role": "offense",
+  "rank": 2,
+  "element": "fire",
+  "effect": "flame",
+  "limit": 3,
+  "count": 6,
+  "power": 18
+ },
+ {
+  "index": 15,
+  "role": "offense",
+  "rank": 2,
+  "element": "earth",
+  "effect": "meteor",
+  "limit": 9,
+  "count": 2,
+  "power": 18
+ },
+ {
+  "index": 16,
+  "role": "defense",
+  "rank": 3,
+  "element": "aqua",
+  "effect": "breakwater",
+  "limit": 4,
+  "count": 3,
+  "power": 12
+ },
+ {
+  "index": 17,
+  "role": "defense",
+  "rank": 3,
+  "element": "wind",
+  "effect": "shadow",
+  "limit": 1,
+  "count": 4,
+  "power": 12
+ },
+ {
+  "index": 18,
+  "role": "defense",
+  "rank": 3,
+  "element": "fire",
+  "effect": "heat",
+  "limit": 4,
+  "count": 2,
+  "power": 12
+ },
+ {
+  "index": 19,
+  "role": "defense",
+  "rank": 3,
+  "element": "earth",
+  "effect": "dome",
+  "limit": 16,
+  "count": 1,
+  "power": 12
+ },
+ {
+  "index": 20,
+  "role": "offense",
+  "rank": 3,
+  "element": "aqua",
+  "effect": "wave",
+  "limit": 8,
+  "count": 3,
+  "power": 24
+ },
+ {
+  "index": 21,
+  "role": "offense",
+  "rank": 3,
+  "element": "wind",
+  "effect": "vortex",
+  "limit": 2,
+  "count": 12,
+  "power": 24
+ },
+ {
+  "index": 22,
+  "role": "offense",
+  "rank": 3,
+  "element": "fire",
+  "effect": "flame",
+  "limit": 4,
+  "count": 6,
+  "power": 24
+ },
+ {
+  "index": 23,
+  "role": "offense",
+  "rank": 3,
+  "element": "earth",
+  "effect": "meteor",
+  "limit": 12,
+  "count": 2,
+  "power": 24
  }
 ]

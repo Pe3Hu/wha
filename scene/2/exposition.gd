@@ -22,6 +22,12 @@ func init_basic_setting() -> void:
 	pass
 
 
+func add_collector(collector_: MarginContainer) -> void:
+	collector_.exposition = self
+	collector_.guild.collectors.remove_child(collector_)
+	collectors.add_child(collector_)
+
+
 func rolls_galleries() -> void:
 	reset_galleries()
 	
@@ -43,22 +49,23 @@ func add_gallery() -> void:
 	var gallery = Global.scene.gallery.instantiate()
 	galleries.add_child(gallery)
 	gallery.set_attributes(input)
-
-
-func add_collector(collector_: MarginContainer) -> void:
-	collector_.exposition = self
-	collector_.guild.collectors.remove_child(collector_)
-	collectors.add_child(collector_)
+#endregion
 
 
 func make_art() -> void:
 	collector = collectors.get_child(0)
 	
-	
+	follow_phase()
+	follow_phase()
+	#skip_all_phases()
+
+
+func skip_all_phases() -> void:
 	for _i in Global.arr.phase.size():
 		follow_phase()
 
 
+#region phase
 func follow_phase() -> void:
 	if phase == null:
 		phase = Global.arr.phase.front()

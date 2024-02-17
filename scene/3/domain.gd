@@ -5,24 +5,25 @@ extends MarginContainer
 @onready var hBox = $HBox
 @onready var acquisitions = $HBox/Acquisitions
 @onready var utilizations = $HBox/Utilizations
+@onready var fertilizations = $HBox/Fertilizations
 
-var colletor = null
+var collector = null
 var workshop = null
 #endregion
 
 
 #region init
 func set_attributes(input_: Dictionary) -> void:
-	colletor = input_.colletor
+	collector = input_.collector
 	
 	init_basic_setting()
 
 
 func init_basic_setting() -> void:
-	workshop = colletor.workshop
-	#var separation = Global.vec.size.token.x - Global.vec.size.exhibit.x
+	workshop = collector.workshop
+	var separation = Global.vec.size.token.x - Global.vec.size.exhibit.x
 	#HBox.set("theme_override_constants/separation", separation)
-	#acquisitions.set("theme_override_constants/separation", separation)
+	acquisitions.set("theme_override_constants/separation", separation)
 	#separation = Global.vec.size.utilization#Global.vec.size.token.y - Global.vec.size.exhibit.y
 	#utilizations.set("theme_override_constants/separation", separation)
 	custom_minimum_size = Vector2(Global.vec.size.exhibit) + Vector2(Global.vec.size.token.x, 0)
@@ -42,7 +43,8 @@ func add_exhibit_as_purpose(exhibit_: MarginContainer, purpose_: String) -> void
 				exhibit_.essenceSacrifices.remove_child(token)
 				box.add_child(token)
 				exhibit_.queue_free()
-	
+		"fertilization":
+			box.add_child(exhibit_)
 	
 	var n = 2 + acquisitions.get_child_count() + utilizations.columns#max(acquisitions.get_child_count() + 2, utilizations.get_child_count())
 	custom_minimum_size.x = n * Global.vec.size.token.x

@@ -4,6 +4,7 @@ extends MarginContainer
 #region vars
 @onready var workshop = $VBox/Workshop
 @onready var domain = $VBox/Domain
+@onready var core = $VBox/Core
 
 var guild = null
 var exposition = null
@@ -20,9 +21,10 @@ func set_attributes(input_: Dictionary) -> void:
 
 func init_basic_setting() -> void:
 	var input = {}
-	input.colletor = self
+	input.collector = self
 	workshop.set_attributes(input)
 	domain.set_attributes(input)
+	core.set_attributes(input)
 #endregion
 
 
@@ -63,6 +65,9 @@ func pick_gallery() -> void:
 		var purpose = purposes[type]
 		domain.add_exhibit_as_purpose(exhibit, purpose)
 		exhibit.collector = self
+	
+	#for exhibit in _preference.gallery.exhibits.get_children():
+	#	domain.add_exhibit_as_purpose(exhibit, "fertilization")
 
 
 func score_gallery(gallery_: MarginContainer) -> void:

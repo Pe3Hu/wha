@@ -22,10 +22,10 @@ func init_basic_setting() -> void:
 	var style = StyleBoxFlat.new()
 	style.bg_color = Color.BLACK
 	bg.set("theme_override_styles/panel", style)
-	add_pack()
+	init_exhibits()
 
 
-func add_pack() -> void:
+func init_exhibits() -> void:
 	var datas = {}
 	
 	for gallery in exposition.galleries.get_children():
@@ -37,18 +37,10 @@ func add_pack() -> void:
 	
 	roll_specialization(datas)
 	var input = {}
-	input[criterion] = specialization
-	var options = Global.dict.pack[criterion][input[criterion]]
-	#print([criterion, input[criterion]])
 	var n = 3
 	
-	while exhibits.get_child_count() < n:
-		var description = Global.get_random_key(options)
-		#print(description)
-		for key in description:
-			input[key] = description[key]
-		
-		add_exhibit(input)
+	for _i in  n:
+		add_exhibit()
 
 
 func roll_specialization(datas_: Dictionary) -> void:
@@ -72,78 +64,36 @@ func roll_specialization(datas_: Dictionary) -> void:
 			flag = datas_[criterion].has(specialization)
 
 
-func add_exhibit(input_: Dictionary) -> void:
-	input_.gallery = self
-	input_.rank = 1
-	input_.inputs = []
+func add_exhibit() -> void:
+	var input = {}
+	input[criterion] = specialization
+	var level = exposition.collector.core.level.get_number()
+	input.gallery = self
+	Global.rng.randomize()
+	input.rank = int(Global.get_random_key(Global.dict.level.rank[level]))
+	var datas = []
+	var a = Global.dict.exihibit.rank[input.rank]
 	
-	if input_.element == "any":
-		input_.element = Global.arr.element.pick_random()
+	for data in Global.dict.exihibit.rank[input.rank]:
+		var flag = true
+		
+		match criterion:
+			"type":
+				flag = data[criterion] == specialization
+			"element":
+				flag = data.elements.front() == specialization
+		
+		if flag:
+			datas.append(data)
 	
-	input_.elements = [input_.element]
-	var options = []
-	var description = null
+	var data = datas.pick_random()
 	
-	#if input_.type == "any":
-	#	mat
-	
-	match input_.type:
-		"field":
-			options = Global.dict.field.rank[input_.rank]
-			input_.inputs = Global.get_random_key(options)
-			Global.add_field_elements_based_on_subtype(input_.elements, input_.inputs.size(), input_.subtype)
-		"beast":
-			options = Global.dict.beast.rank[input_.rank].input
-			input_.inputs = options.pick_random()
-			options = Global.dict.beast.rank[input_.rank].output
-			input_.outputs = options.pick_random()
-		"ritual":
-			options = Global.dict.ritual.role[input_.subtype]
-			input_.index = options.pick_random()
-			description = Global.dict.ritual.index[input_.index]
-			input_.inputs = [description.input.limit]
-			input_.outputs = [description.output.limit]
-			input_.effect = description.output.type
-			
-			if Global.arr.element.has(description.input.type):
-				input_.elements.append(description.input.type)
-			
-			if description.output.has("count"):
-				input_.count = description.output.count
-		"enchantment":
-			options = Global.dict.enchantment.limit[input_.rank][input_.subtype]
-			description = options.pick_random()
-			input_.inputs.append_array(description.limits)
-			#input_.power = int(description.power)
-			options = Global.dict.enchantment.effect[input_.rank][input_.subtype][input_.element]
-			description = options.pick_random()
-			input_.effect = description.effect
-			input_.outputs = [description.limit]
-			input_.count = int(description.count)
-	
-	if input_.elements.size() == 1:
-		Global.add_random_elements(input_.elements, input_.inputs.size())
+	for key in data:
+		input[key] = data[key]
 	
 	var exhibit = Global.scene.exhibit.instantiate()
 	exhibits.add_child(exhibit)
-	exhibit.set_attributes(input_)
-	duplicate_recycling()
-
-
-func duplicate_recycling() -> void:
-	if exhibits.get_child_count() == 1:
-		return
-	
-	var child = exhibits.get_child(exhibits.get_child_count() - 1)
-	var parents = []
-	parents.append_array(exhibits.get_children())
-	parents.erase(child)
-	
-	for parent in parents:
-		if !child.duplicate_check(parent):
-			exhibits.remove_child(child)
-			child.queue_free()
-			return
+	exhibit.set_attributes(input)
 
 
 func pair_up() -> Array:

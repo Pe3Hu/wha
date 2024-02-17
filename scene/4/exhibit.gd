@@ -11,6 +11,9 @@ extends MarginContainer
 @onready var essenceGifts = $Gifts/VBox/Essences
 @onready var effectGifts = $Gifts/VBox/Effects
 @onready var score = $Score
+@onready var criterionTag = $Tags/Icons/Criterion
+@onready var rankTag = $Tags/Icons/Rank
+@onready var subtypeTag = $Tags/Icons/Subtype
 
 var gallery = null
 var collector = null
@@ -51,6 +54,8 @@ func init_basic_setting(input_: Dictionary) -> void:
 	input.type = "exhibit"
 	input.subtype = null
 	score.set_attributes(input)
+	
+	init_tags()
 
 
 func init_requirements(input_: Dictionary) -> void:
@@ -67,8 +72,6 @@ func init_requirements(input_: Dictionary) -> void:
 			var token = Global.scene.requirement.instantiate()
 			essenceRequirements.add_child(token)
 			token.set_attributes(input)
-			
-			var a = token.get_children()
 
 
 func init_gifts(input_: Dictionary) -> void:
@@ -118,6 +121,7 @@ func init_sacrifices() -> void:
 	var token = Global.scene.token.instantiate()
 	essenceSacrifices.add_child(token)
 	token.set_attributes(input)
+	token.set_limit(rank)
 	
 	match type:
 		"treasure":
@@ -153,12 +157,31 @@ func init_productions() -> void:
 				effectProductions.add_child(token)
 		
 		token.set_attributes(input)
-		
-		if type == "enchantment":
-			token.set_bg_color(Global.color.role[subtype])
-			
-			if count != null:
-				token.count.set_number(count)
+	
+		match type:
+			"field":
+				token.set_limit(rank)
+			"enchantment":
+				token.set_bg_color(Global.color.role[subtype])
+				
+				if count != null:
+					token.count.set_number(count)
+
+
+func init_tags() -> void:
+	var input = {}
+	input.type = "tag"
+	input.subtype = gallery.specialization
+	criterionTag.set_attributes(input)
+	criterionTag.custom_minimum_size = Vector2(Global.vec.size.token * 0.5) 
+	
+	input.subtype = rank
+	rankTag.set_attributes(input)
+	rankTag.custom_minimum_size = Vector2(Global.vec.size.token * 0.5) 
+	
+	input.subtype = subtype
+	subtypeTag.set_attributes(input)
+	subtypeTag.custom_minimum_size = Vector2(Global.vec.size.token * 0.5) 
 
 
 func set_purpose(purpose_: String) -> void:
@@ -179,6 +202,9 @@ func set_purpose(purpose_: String) -> void:
 
 
 func duplicate_check(exhibit_: MarginContainer) -> bool:
+	#if exhibit_.rank != rank:
+	#	return false
+	
 	var keys = ["essenceRequirements", "essenceProductions", "essenceSacrifices", "threatSacrifices", "essenceGifts", "effectGifts"]
 	
 	for key in keys:
@@ -218,6 +244,8 @@ func closure() -> void:
 		var storage = collector.workshop.get_storage_based_on_element(token.subtype)
 		var value = token.get_limit()
 		storage.change_increment(value)
+	
+	collector.core.level_up()
 	
 	collector.domain.acquisitions.remove_child(self)
 	queue_free()

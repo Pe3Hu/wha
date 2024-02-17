@@ -43,6 +43,8 @@ func init_dict() -> void:
 	init_beast()
 	init_field()
 	init_pack()
+	init_level()
+	init_exihibit()
 
 
 func init_neighbor() -> void:
@@ -303,6 +305,82 @@ func init_pack() -> void:
 	dict.criterion.element["earth"] = 1
 
 
+func init_level() -> void:
+	dict.level = {}
+	dict.level.rank = {}
+	dict.level.income = {}
+	
+	var path = "res://asset/json/wha_level.json"
+	var array = load_data(path)
+	
+	for level in array:
+		dict.level.rank[int(level.index)] = {}
+		
+		for key in level:
+			level[key] = int(level[key])
+			var words = key.split(" ")
+			
+			if words.has("rank"):
+				dict.level.rank[level.index][int(words[1])] = level[key]
+		
+		dict.level.income[level.index] = level.income
+
+
+func init_exihibit() -> void:
+	var ranks = [1, 2, 3]
+	var types = ["field", "enchantment"]
+	dict.exihibit = {}
+	dict.exihibit.rank = {}
+	
+	for rank in ranks:
+		dict.exihibit.rank[rank] = []
+		
+		for type in types:
+			for subtype in arr[type]:
+				match type:
+					"field":
+						for inputs in dict.field.rank[rank]:
+							var constituents = get_all_elements_constituents_based_on_size(inputs.size())
+							
+							for elements in constituents:
+								var data = {}
+								data.inputs = inputs
+								data.elements = elements
+								data.type = type
+								data.subtype = subtype
+								#var weight = dict.field.rank[rank][inputs]
+								#dict.exihibit.rank[rank][data] = weight
+								dict.exihibit.rank[rank].append(data)
+					"enchantment":
+						var limits = []
+						var options = Global.dict.enchantment.limit[rank][subtype]
+						
+						for option in options:
+							limits.append(option.limits)
+						
+						
+						for inputs in limits:
+							var constituents = get_all_elements_constituents_based_on_size(inputs.size())
+							
+							for elements in constituents:
+									var data = {}
+									data.inputs = inputs
+									data.elements = elements
+									data.type = type
+									data.subtype = subtype
+									#var weight = dict.field.rank[rank][inputs]
+									#dict.exihibit.rank[rank][data] = weight
+									
+									options = Global.dict.enchantment.effect[rank][subtype][elements.front()]
+									
+									for option in options:
+										data.effect = option.effect
+										data.outputs = [option.limit]
+										data.count = int(option.count)
+									
+									dict.exihibit.rank[rank].append(data)
+
+
 func init_node() -> void:
 	node.game = get_node("/root/Game")
 
@@ -373,6 +451,11 @@ func init_color():
 	#color.element.earth.fill = Color.from_hsv(30 / h, s, v)
 	#color.element.earth.background = Color.from_hsv(30 / h, 0.5, 0.9)
 	
+	color.indicator = {}
+	color.indicator.health = {}
+	color.indicator.health.fill = Color.from_hsv(0, 1, 0.9)
+	color.indicator.health.background = Color.from_hsv(0, 0.25, 0.9)
+	
 	s = 0.0
 	v = 0.5
 	color.role = {}
@@ -414,6 +497,8 @@ func get_random_key(dict_: Dictionary):
 		index += weight/total
 		
 		if index > index_r:
+			#if dict_.keys().size() == 3 and !arr.element.has(key):
+			#	print([total, index_r, key])
 			return key
 	
 	print("!bug! index_r error in get_random_key func")
@@ -486,6 +571,23 @@ func add_field_elements_based_on_subtype(elements_: Array, count_: int, subtype_
 			var element = get_random_key(options)
 			options.erase(element)
 			elements_.append(element)
+
+
+func get_all_elements_constituents_based_on_size(size_: int) -> Array:
+	var constituents = get_all_constituents(arr.element)
+	constituents = constituents[size_]
+	
+	for _i in constituents.size():
+		for _j in size_ - 1:
+			var constituent = []
+			constituent.append_array(constituents[_i])
+			
+			for _l in _j + 1:
+				var element = constituent.pop_front()
+				constituent.append(element)
+			
+			constituents.append(constituent)
+	return constituents
 
 
 func get_all_substitutions(array_: Array) -> Array:

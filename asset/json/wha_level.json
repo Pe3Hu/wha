@@ -1,0 +1,37 @@
+[
+ {
+  "index": 0,
+  "income": 5,
+  "rank 1": 100,
+  "rank 2": 0,
+  "rank 3": 0
+ },
+ {
+  "index": 1,
+  "income": 7,
+  "rank 1": 70,
+  "rank 2": 30,
+  "rank 3": 0
+ },
+ {
+  "index": 2,
+  "income": 11,
+  "rank 1": 40,
+  "rank 2": 50,
+  "rank 3": 10
+ },
+ {
+  "index": 3,
+  "income": 17,
+  "rank 1": 10,
+  "rank 2": 60,
+  "rank 3": 30
+ },
+ {
+  "index": 4,
+  "income": 25,
+  "rank 1": 0,
+  "rank 2": 40,
+  "rank 3": 60
+ }
+]
