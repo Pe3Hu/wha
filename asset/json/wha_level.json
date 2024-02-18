@@ -1,37 +1,47 @@
 [
- {
-  "index": 0,
-  "income": 5,
-  "rank 1": 100,
-  "rank 2": 0,
-  "rank 3": 0
- },
- {
-  "index": 1,
-  "income": 7,
-  "rank 1": 70,
-  "rank 2": 30,
-  "rank 3": 0
- },
- {
-  "index": 2,
-  "income": 11,
-  "rank 1": 40,
-  "rank 2": 50,
-  "rank 3": 10
- },
- {
-  "index": 3,
-  "income": 17,
-  "rank 1": 10,
-  "rank 2": 60,
-  "rank 3": 30
- },
- {
-  "index": 4,
-  "income": 25,
-  "rank 1": 0,
-  "rank 2": 40,
-  "rank 3": 60
- }
+	{
+		"index": 0,
+		"income": 5,
+		"exhibit rank 1": 100,
+		"exhibit rank 2": 0,
+		"exhibit rank 3": 0,
+		"power offense": 8,
+		"power defense": 3
+	},
+	{
+		"index": 1,
+		"income": 7,
+		"exhibit rank 1": 70,
+		"exhibit rank 2": 30,
+		"exhibit rank 3": 0,
+		"power offense": 20,
+		"power defense": 9
+	},
+	{
+		"index": 2,
+		"income": 11,
+		"exhibit rank 1": 40,
+		"exhibit rank 2": 50,
+		"exhibit rank 3": 10,
+		"power offense": 28,
+		"power defense": 12
+	},
+	{
+		"index": 3,
+		"income": 17,
+		"exhibit rank 1": 10,
+		"exhibit rank 2": 60,
+		"exhibit rank 3": 30,
+		"power offense": 48,
+		"power defense": 21
+	},
+	{
+		"index": 4,
+		"income": 25,
+		"exhibit rank 1": 0,
+		"exhibit rank 2": 40,
+		"exhibit rank 3": 60,
+		"power offense": 76,
+		"power defense": 33
+	}
 ]

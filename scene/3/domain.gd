@@ -32,6 +32,7 @@ func init_basic_setting() -> void:
 func add_exhibit_as_purpose(exhibit_: MarginContainer, purpose_: String) -> void:
 	var box = get(purpose_+"s")
 	exhibit_.gallery.exhibits.remove_child(exhibit_)
+	exhibit_.collector = collector
 	
 	match purpose_:
 		"acquisition":
@@ -54,7 +55,7 @@ func add_exhibit_as_purpose(exhibit_: MarginContainer, purpose_: String) -> void
 func filling_of_exhibit_requirements() -> void:
 	for exhibit in acquisitions.get_children():
 		for requirement in exhibit.essenceRequirements.get_children():
-			var storage = workshop.get_storage_based_on_element(requirement.subtype)
+			var storage = workshop.get_storage_based_on_subtype(requirement.subtype)
 			
 			if storage.get_current() > 0:
 				var arrear = requirement.get_limit() - requirement.get_current()
@@ -64,3 +65,6 @@ func filling_of_exhibit_requirements() -> void:
 					storage.change_current(-repayment)
 					requirement.change_current(repayment)
 					exhibit.completion_check()
+					#var score = collector.workshop.get_score_based_on_subtype(requirement.subtype)
+					#var token = score.get_token_based_on_subtype("demand")
+					#token.change_limit(-repayment)

@@ -23,7 +23,4 @@ func _input(event) -> void:
 					sketch.wildlands.museums.get_child(0).expositions.get_child(0).follow_phase()#collectors.get_child(0).prepare_galleries()
 
 
-func _process(delta_) -> void:
-	$FPS.text = str(Engine.get_frames_per_second())
-
 

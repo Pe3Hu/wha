@@ -2,12 +2,14 @@ extends MarginContainer
 
 
 #region vars
+@onready var lap = $VBox/Icons/Lap
+@onready var turn = $VBox/Icons/Turn
+@onready var phase = $VBox/Icons/Phase
 @onready var collectors = $VBox/Collectors
 @onready var galleries = $VBox/Galleries
 
 var museum = null
 var collector = null
-var phase = null
 #endregion
 
 
@@ -19,7 +21,23 @@ func set_attributes(input_: Dictionary) -> void:
 
 
 func init_basic_setting() -> void:
-	pass
+	init_icons()
+
+
+func init_icons() -> void:
+	var input = {}
+	input.type = "number"
+	input.subtype = 0
+	lap.set_attributes(input)
+	lap.custom_minimum_size = Vector2(Global.vec.size.token * 0.5)
+	
+	turn.set_attributes(input)
+	turn.custom_minimum_size = Vector2(Global.vec.size.token * 0.5) 
+	
+	input.type = "phase"
+	input.subtype = Global.arr.phase.back()
+	phase.set_attributes(input)
+	phase.custom_minimum_size = Vector2(Global.vec.size.token * 0.5) 
 
 
 func add_collector(collector_: MarginContainer) -> void:
@@ -55,9 +73,10 @@ func add_gallery() -> void:
 func make_art() -> void:
 	collector = collectors.get_child(0)
 	
-	follow_phase()
-	follow_phase()
-	#skip_all_phases()
+	#follow_phase()
+	
+	for _i in 0:
+		skip_all_phases()
 
 
 func skip_all_phases() -> void:
@@ -67,17 +86,22 @@ func skip_all_phases() -> void:
 
 #region phase
 func follow_phase() -> void:
-	if phase == null:
-		phase = Global.arr.phase.front()
-	else:
-		var index = Global.arr.phase.find(phase)
-		index = (index + 1) % Global.arr.phase.size()
-		phase = Global.arr.phase[index]
-		
-		if index == 0:
-			swap_collector()
+	var index = Global.arr.phase.find(phase.subtype)
+	index = (index + 1) % Global.arr.phase.size()
 	
-	var func_name = phase+"_"+"phase"
+	phase.subtype = Global.arr.phase[index]
+	phase.update_image()
+	
+	if index == 0:
+		swap_collector()
+	
+	turn.change_number(1)
+	
+	if turn.get_number() == Global.arr.phase.size() * 2:
+		turn.set_number(0)
+		lap.change_number(1)
+	
+	var func_name = phase.subtype + "_" + "phase"
 	call(func_name)
 
 

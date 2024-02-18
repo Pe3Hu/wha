@@ -37,6 +37,28 @@ func set_increment(value_: Variant) -> void:
 #endregion
 
 
+#region current treatment
+func get_current() -> Variant:
+	return current.get_number()
+
+
+func change_current(value_: Variant) -> void:
+	current.change_number(value_)
+	#
+	#if value_ > 0:
+		#var score = proprietor.get_score_based_on_subtype(subtype)
+		#
+		#if score != null:
+			#var demand = score.get_token_based_on_subtype("demand")
+			#var value = min(value_, demand.get_limit())
+			#demand.change_limit(-value_)
+
+
+func set_current(value_: Variant) -> void:
+	current.set_number(value_)
+#endregion
+
+
 func apply_increment() -> void:
 	var value = get_increment()
 	

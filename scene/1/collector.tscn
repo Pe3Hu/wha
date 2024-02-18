@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://b6xt38h3tpi5k"]
+[gd_scene load_steps=7 format=3 uid="uid://b6xt38h3tpi5k"]
 
 [ext_resource type="Script" path="res://scene/1/collector.gd" id="1_l8sef"]
 [ext_resource type="PackedScene" uid="uid://by6n2juyeg4qi" path="res://scene/3/workshop.tscn" id="2_7pdmr"]
 [ext_resource type="PackedScene" uid="uid://jyc08rexs85x" path="res://scene/5/core.tscn" id="2_bi08f"]
 [ext_resource type="PackedScene" uid="uid://bfqdscp7cy8a2" path="res://scene/3/domain.tscn" id="3_gwjkp"]
+[ext_resource type="PackedScene" uid="uid://blw8p36tqdrx6" path="res://scene/5/forge.tscn" id="4_wurgy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 
@@ -39,5 +40,13 @@ layout_mode = 2
 [node name="Workshop" parent="VBox" instance=ExtResource("2_7pdmr")]
 layout_mode = 2
 
-[node name="Domain" parent="VBox" instance=ExtResource("3_gwjkp")]
+[node name="HBox" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Forge" parent="VBox/HBox" instance=ExtResource("4_wurgy")]
+layout_mode = 2
+
+[node name="Domain" parent="VBox/HBox" instance=ExtResource("3_gwjkp")]
 layout_mode = 2

@@ -97,12 +97,10 @@ func init_inverse() -> void:
 	dict.element = {}
 	dict.element.inverse = {}
 	var n = arr.element.size()
-	var unuseds = []
 	
 	for element in arr.element:
 		var index = (arr.element.find(element) + n / 2) % n
 		dict.element.inverse[element] = arr.element[index]
-	
 	
 	dict.relevance = {}
 	dict.relevance["offense"] = 4
@@ -309,19 +307,23 @@ func init_level() -> void:
 	dict.level = {}
 	dict.level.rank = {}
 	dict.level.income = {}
+	dict.level.power = {}
 	
 	var path = "res://asset/json/wha_level.json"
 	var array = load_data(path)
 	
 	for level in array:
 		dict.level.rank[int(level.index)] = {}
+		dict.level.power[int(level.index)] = {}
 		
 		for key in level:
 			level[key] = int(level[key])
 			var words = key.split(" ")
 			
 			if words.has("rank"):
-				dict.level.rank[level.index][int(words[1])] = level[key]
+				dict.level.rank[level.index][int(words[2])] = level[key]
+			if words.has("power"):
+				dict.level.power[level.index][words[1]] = level[key]
 		
 		dict.level.income[level.index] = level.income
 
@@ -377,6 +379,8 @@ func init_exihibit() -> void:
 										data.effect = option.effect
 										data.outputs = [option.limit]
 										data.count = int(option.count)
+										data.limit = int(option.limit)
+										data.power = int(option.power)
 									
 									dict.exihibit.rank[rank].append(data)
 
@@ -474,7 +478,7 @@ func load_data(path_: String):
 	var file = FileAccess.open(path_, FileAccess.READ)
 	var text = file.get_as_text()
 	var json_object = JSON.new()
-	var parse_err = json_object.parse(text)
+	var _parse_err = json_object.parse(text)
 	return json_object.get_data()
 
 
@@ -659,7 +663,6 @@ func get_all_constituents(array_: Array) -> Dictionary:
 
 func set_constituents_based_on_size(constituents_: Dictionary, size_: int) -> void:
 	var parents = constituents_[size_-1]
-	var indexs = []
 	constituents_[size_] = []
 	
 	for parent in parents:

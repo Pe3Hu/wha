@@ -8,6 +8,7 @@ extends MarginContainer
 var exposition = null
 var criterion = null
 var specialization = null
+var hue = null
 #endregion
 
 
@@ -36,8 +37,8 @@ func init_exhibits() -> void:
 			datas[gallery.criterion].append(gallery.specialization)
 	
 	roll_specialization(datas)
-	var input = {}
 	var n = 3
+	hue = Global.rng.randf_range(0.0, 1.0 / n) * (get_index() + 1) - 0.5 / n
 	
 	for _i in  n:
 		add_exhibit()
@@ -72,7 +73,6 @@ func add_exhibit() -> void:
 	Global.rng.randomize()
 	input.rank = int(Global.get_random_key(Global.dict.level.rank[level]))
 	var datas = []
-	var a = Global.dict.exihibit.rank[input.rank]
 	
 	for data in Global.dict.exihibit.rank[input.rank]:
 		var flag = true

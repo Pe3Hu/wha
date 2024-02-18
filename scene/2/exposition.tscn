@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cfg1xlyn5dat8"]
+[gd_scene load_steps=4 format=3 uid="uid://cfg1xlyn5dat8"]
 
 [ext_resource type="Script" path="res://scene/2/exposition.gd" id="1_a4daj"]
+[ext_resource type="PackedScene" uid="uid://ciw38iqel0v5a" path="res://scene/0/icon.tscn" id="2_aihtp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7paps"]
 
@@ -29,6 +30,19 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_7paps")
 [node name="VBox" type="VBoxContainer" parent="."]
 layout_mode = 2
 alignment = 1
+
+[node name="Icons" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Lap" parent="VBox/Icons" instance=ExtResource("2_aihtp")]
+layout_mode = 2
+
+[node name="Phase" parent="VBox/Icons" instance=ExtResource("2_aihtp")]
+layout_mode = 2
+
+[node name="Turn" parent="VBox/Icons" instance=ExtResource("2_aihtp")]
+layout_mode = 2
 
 [node name="Collectors" type="HBoxContainer" parent="VBox"]
 layout_mode = 2

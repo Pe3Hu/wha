@@ -64,14 +64,20 @@ func roll_affinity() -> void:
 			storage.change_increment(-1)
 
 
-func get_storage_based_on_element(element_: String) -> MarginContainer:
-	var index = Global.arr.element.find(element_)
-	return storages.get_child(index)
+func get_storage_based_on_subtype(subtype_: String) -> Variant:
+	for storage in storages.get_children():
+		if storage.subtype == subtype_:
+			return storage
+	
+	return null
 
 
-func get_score_based_on_element(element_: String) -> MarginContainer:
-	var index = Global.arr.element.find(element_)
-	return scores.get_child(index)
+func get_score_based_on_subtype(subtype_: String) -> Variant:
+	for score in scores.get_children():
+		if score.subtype == subtype_:
+			return score
+	
+	return null
 #endregion
 
 
@@ -83,30 +89,56 @@ func get_essence_from_increment() -> void:
 
 
 func update_scores() -> void:
+	update_supplies()
+	update_demands()
+
+
+func update_supplies() -> void:
 	var supplies = []
 	
 	for element in Global.arr.element:
-		var storage = get_storage_based_on_element(element)
+		var storage = get_storage_based_on_subtype(element)
 		supplies.append(storage.get_current())
 	
 	supplies.sort()
 	
 	for element in Global.arr.element:
-		var score = get_score_based_on_element(element)
-		var storage = get_storage_based_on_element(element)
+		var score = get_score_based_on_subtype(element)
+		var storage = get_storage_based_on_subtype(element)
 		var value = float(storage.get_current()) - supplies.front()
 		value /= (supplies.back() - supplies.front())
-		var token = score.get_token_based_on_subtype("supply")
-		token.set_limit(value)
-		#
-		#token = score.get_token_based_on_subtype("demand")
-		#token.set_limit(0)
+		var supply = score.get_token_based_on_subtype("supply")
+		supply.set_limit(value)
+
+
+func update_demands() -> void:
+	for score in scores.get_children():
+		var demand = score.get_token_based_on_subtype("demand")
+		var storage = get_storage_based_on_subtype(score.subtype)
+		var value = -storage.get_limit()
+		demand.set_limit(value)
+	
+	
+	for exhibit in domain.acquisitions.get_children():
+		for requirement in exhibit.essenceRequirements.get_children():
+			var arrear = requirement.get_limit() - requirement.get_current()
+			
+			if arrear > 0:
+				var score = get_score_based_on_subtype(requirement.subtype)
+				var demand = score.get_token_based_on_subtype("demand")
+				demand.change_limit(arrear)
+	
+	for score in scores.get_children():
+		var demand = score.get_token_based_on_subtype("demand")
+		var value = max(0, demand.get_limit())
+		demand.set_limit(value)
 
 
 func get_essence_from_sacrifice() -> void:
 	while domain.utilizations.get_child_count() > 0:
 		var token = domain.utilizations.get_child(0)
-		var storage = get_storage_based_on_element(token.subtype)
-		storage.change_current(token.get_limit())
+		var storage = get_storage_based_on_subtype(token.subtype)
+		var value = token.get_limit()
+		storage.change_current(value)
 		domain.utilizations.remove_child(token)
 		token.queue_free()

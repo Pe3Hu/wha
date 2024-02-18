@@ -3,12 +3,12 @@ extends MarginContainer
 
 #region vars
 @onready var workshop = $VBox/Workshop
-@onready var domain = $VBox/Domain
+@onready var domain = $VBox/HBox/Domain
 @onready var core = $VBox/Core
+@onready var forge = $VBox/HBox/Forge
 
 var guild = null
 var exposition = null
-var hazards = []
 #endregion
 
 
@@ -25,6 +25,7 @@ func init_basic_setting() -> void:
 	workshop.set_attributes(input)
 	domain.set_attributes(input)
 	core.set_attributes(input)
+	forge.set_attributes(input)
 #endregion
 
 
@@ -64,7 +65,6 @@ func pick_gallery() -> void:
 		var exhibit = pair[type]
 		var purpose = purposes[type]
 		domain.add_exhibit_as_purpose(exhibit, purpose)
-		exhibit.collector = self
 	
 	#for exhibit in _preference.gallery.exhibits.get_children():
 	#	domain.add_exhibit_as_purpose(exhibit, "fertilization")
@@ -85,12 +85,12 @@ func score_exhibit(exhibit_: MarginContainer) -> void:
 		match subtype:
 			"input":
 				for essence in exhibit_.essenceRequirements.get_children():
-					var storage = workshop.get_storage_based_on_element(essence.subtype)
+					var storage = workshop.get_storage_based_on_subtype(essence.subtype)
 					var value = min(storage.get_current() -essence.get_limit(), 0)
 					token.change_limit(value)
 			"utilization":
 				for essence in exhibit_.essenceSacrifices.get_children():
-					var score = workshop.get_score_based_on_element(essence.subtype)
+					var score = workshop.get_score_based_on_subtype(essence.subtype)
 					var supply = score.get_token_based_on_subtype("supply")
 					var value = (1 - supply.get_limit()) * essence.get_limit()
 					token.change_limit(value)
@@ -102,31 +102,59 @@ func score_exhibit(exhibit_: MarginContainer) -> void:
 				for essence in exhibit_.essenceProductions.get_children():
 					var value = (Global.dict.relevance["production"] * Global.dict.relevance["essence"] - 0.0) * essence.get_limit()
 					token.change_limit(value)
-				
-				for effect in exhibit_.effectProductions.get_children():
-					var value = (Global.dict.relevance["production"] * Global.dict.relevance[effect.type] - 0.0) * effect.get_limit()
-					
-					if hazards.is_empty() and effect.type == "defense":
-						value = 0
-					
-					token.change_limit(value)
-			"total":
-				for essence in exhibit_.essenceRequirements.get_children():
 					var multiplier = 1
 					
 					if essence.subtype == workshop.repulsion:
-						multiplier = -1
+						multiplier = 1.5
 					if essence.subtype == workshop.affinity:
-						multiplier = 2
+						multiplier = 0.75
+					
+					token.multiply_limit(multiplier)
+				
+				if exhibit_.type == "enchantment":
+					var value = float(forge.priorities[exhibit_.subtype]) / exhibit_.power
+					
+					if value > 0:
+						if exhibit_.effectProductions.get_child_count() > 0:
+							value *= Global.dict.relevance["production"]
+						
+						token.change_limit(value)
+				#for effect in exhibit_.effectProductions.get_children():
+					#var value = (Global.dict.relevance["production"] * Global.dict.relevance[effect.type] - 0.0) * effect.get_limit()
+					#
+					#if hazards.is_empty() and effect.type == "defense":
+						#value = 0
+					#
+					#token.change_limit(value)
+			"total":
+				var multiplier = 1
+				
+				for essence in exhibit_.essenceRequirements.get_children():
+					multiplier = 1
+					
+					if essence.subtype == workshop.repulsion:
+						multiplier = -2
+					if essence.subtype == workshop.affinity:
+						multiplier = 3
 					
 					var value = multiplier * essence.get_limit()
 					token.change_limit(value)
 				
-				var multiplier = exhibit_.score.get_token_based_on_subtype("output").get_limit()
+				var minus = exhibit_.score.get_token_based_on_subtype("input").get_limit()
+				token.change_limit(minus)
+				multiplier = exhibit_.score.get_token_based_on_subtype("output").get_limit()
 				
 				if multiplier != 0:
 					multiplier = 1.0 / multiplier
 					token.multiply_limit(multiplier)
 				else:
-					token.set_limit(-99)
+					token.change_limit(-99)
+				
+				for essence in exhibit_.essenceProductions.get_children():
+					var score = workshop.get_score_based_on_subtype(essence.subtype)
+					var demand = score.get_token_based_on_subtype("demand")
+					
+					if demand.get_limit() > 0:
+						var value = demand.get_limit() * essence.get_limit()
+						token.change_limit(value)
 #endregion

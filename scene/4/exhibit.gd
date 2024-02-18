@@ -23,6 +23,8 @@ var subtype = null
 var elements = null
 var effect = null
 var count = null
+var limit = null
+var power = null
 var purpose = null
 #endregion
 
@@ -38,24 +40,30 @@ func set_attributes(input_: Dictionary) -> void:
 func init_basic_setting(input_: Dictionary) -> void:
 	custom_minimum_size = Vector2(Global.vec.size.exhibit)
 	
-	var style = StyleBoxFlat.new()
-	Global.rng.randomize()
-	var h  = Global.rng.randf_range(0, 1)
-	style.bg_color = Color.from_hsv(h, 0.7, 0.7)
-	bg.set("theme_override_styles/panel", style)
-	
+	init_bg_color()
 	init_requirements(input_)
 	init_gifts(input_)
 	init_sacrifices()
 	init_productions()
-	
+	init_score()
+	init_tags()
+
+
+func init_score() -> void:
 	var input = {}
 	input.proprietor = self
 	input.type = "exhibit"
 	input.subtype = null
 	score.set_attributes(input)
-	
-	init_tags()
+
+
+func init_bg_color() -> void:
+	var style = StyleBoxFlat.new()
+	Global.rng.randomize()
+	var s = Global.rng.randf_range(0.5, 0.9)
+	var v = Global.rng.randf_range(0.4, 0.9)
+	style.bg_color = Color.from_hsv(gallery.hue, s, v)
+	bg.set("theme_override_styles/panel", style)
 
 
 func init_requirements(input_: Dictionary) -> void:
@@ -163,6 +171,7 @@ func init_productions() -> void:
 				token.set_limit(rank)
 			"enchantment":
 				token.set_bg_color(Global.color.role[subtype])
+				token.set_limit(limit)
 				
 				if count != null:
 					token.count.set_number(count)
@@ -182,6 +191,7 @@ func init_tags() -> void:
 	input.subtype = subtype
 	subtypeTag.set_attributes(input)
 	subtypeTag.custom_minimum_size = Vector2(Global.vec.size.token * 0.5) 
+#endregion
 
 
 func set_purpose(purpose_: String) -> void:
@@ -191,6 +201,16 @@ func set_purpose(purpose_: String) -> void:
 			"acquisition":
 				var node = get_node("Sacrifices")
 				node.visible = false
+				
+				#for requirement in essenceRequirements.get_children():
+					#var _score = collector.workshop.get_score_based_on_subtype(requirement.subtype)
+					#var token = _score.get_token_based_on_subtype("demand")
+					#var value = requirement.get_limit()
+					#token.change_limit(value)
+				
+				if type == "enchantment":
+					collector.forge.powers[subtype] += power
+					collector.forge.update_priorities()
 			#"utilization":
 				#var node = get_node("Requirements")
 				#node.visible = false
@@ -201,35 +221,7 @@ func set_purpose(purpose_: String) -> void:
 				#custom_minimum_size = Vector2(Global.vec.size.utilization)
 
 
-func duplicate_check(exhibit_: MarginContainer) -> bool:
-	#if exhibit_.rank != rank:
-	#	return false
-	
-	var keys = ["essenceRequirements", "essenceProductions", "essenceSacrifices", "threatSacrifices", "essenceGifts", "effectGifts"]
-	
-	for key in keys:
-		var nodes = {}
-		nodes.self = get(key)
-		nodes.other = exhibit_.get(key)
-		
-		if nodes.self.get_child_count() == nodes.other.get_child_count():
-			for _i in nodes.self.get_child_count():
-				var tokens = {}
-				tokens.self = nodes.self.get_child(_i)
-				tokens.other = nodes.other.get_child(_i)
-				
-				if tokens.self.get_limit() != tokens.other.get_limit():
-					return false
-		else:
-			return false
-	
-	return true
-#endregion
-
-
 func completion_check() -> void:
-	var flag = true
-	
 	for requirement in essenceRequirements.get_children():
 		var arrear = requirement.get_limit() - requirement.get_current()
 	
@@ -241,11 +233,18 @@ func completion_check() -> void:
 
 func closure() -> void:
 	for token in essenceProductions.get_children():
-		var storage = collector.workshop.get_storage_based_on_element(token.subtype)
+		var storage = collector.workshop.get_storage_based_on_subtype(token.subtype)
 		var value = token.get_limit()
 		storage.change_increment(value)
 	
 	collector.core.level_up()
+	
+	
+	while effectProductions.get_child_count() > 0:
+		var token = effectProductions.get_child(0)
+		effectProductions.remove_child(token)
+		collector.forge.add_effect(token)
+	
 	
 	collector.domain.acquisitions.remove_child(self)
 	queue_free()
