@@ -37,7 +37,7 @@ func init_exhibits() -> void:
 			datas[gallery.criterion].append(gallery.specialization)
 	
 	roll_specialization(datas)
-	var n = 3
+	var n = Global.num.limit.gallery
 	hue = Global.rng.randf_range(0.0, 1.0 / n) * (get_index() + 1) - 0.5 / n
 	
 	for _i in  n:
@@ -51,8 +51,6 @@ func roll_specialization(datas_: Dictionary) -> void:
 		specialization = Global.get_random_key(options)
 		return
 	
-	#criterion = datas_.keys().front()
-	#specialization = datas_[criterion].front()
 	var flag = true
 	
 	while flag:

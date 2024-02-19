@@ -52,6 +52,80 @@ func add_exhibit_as_purpose(exhibit_: MarginContainer, purpose_: String) -> void
 #endregion
 
 
+func organize_exhibits() -> void:
+	var datas = []
+	
+	while acquisitions.get_child_count() > 0:
+		var data = {}
+		data.exhibit = acquisitions.get_child(0)
+		data.availability = 0
+		data.urgency = 0
+		data.weight = 0
+		acquisitions.remove_child(data.exhibit)
+		
+		for requirement in data.exhibit.essenceRequirements.get_children():
+			var storage = workshop.get_storage_based_on_subtype(requirement.subtype)
+			var presence = storage.get_limit() - requirement.get_limit()
+			
+			if presence < 0:
+				var multiplier = 1
+					
+				if requirement.subtype == workshop.repulsion:
+					multiplier = 0.5
+				if requirement.subtype == workshop.affinity:
+					multiplier = 1.5
+				
+				data.availability += presence * multiplier
+		
+		match data.exhibit.type:
+			"field":
+				for production in data.exhibit.essenceProductions.get_children():
+					var value = production.get_limit() * Global.dict.organize[data.exhibit.type]
+					var score = collector.workshop.get_score_based_on_subtype(production.subtype)
+					var demand = score.get_token_based_on_subtype("demand")
+					
+					if demand.get_limit() > 0:
+						var supply = score.get_token_based_on_subtype("supply")
+						value += demand.get_limit() / (supply.get_limit() + 1)
+					
+					data.urgency += value
+			"enchantment":
+				var value = data.exhibit.power * Global.dict.organize[data.exhibit.type]
+				var mirror = Global.dict.mirror[data.exhibit.subtype]
+				data.urgency += collector.opponent.forge.powers[mirror] + value
+			"beast":
+				for gift in data.exhibit.essenceGifts.get_children():
+					var value = gift.get_limit() * Global.dict.organize[data.exhibit.type]
+					var score = collector.workshop.get_score_based_on_subtype(gift.subtype)
+					var demand = score.get_token_based_on_subtype("demand")
+					
+					if demand.get_limit() > 0:
+						var supply = score.get_token_based_on_subtype("supply")
+						value += demand.get_limit() / (supply.get_limit() + 1)
+					
+					data.urgency += value
+		
+		if data.availability == 0:
+			data.weight = int(data.urgency)
+		
+		datas.append(data)
+	
+	datas.sort_custom(func(a, b): return a.weight > b.weight)
+	
+	var weight = int(datas.front().weight)
+	
+	if weight != 0:
+		while !datas.is_empty() and datas.front().weight == weight:
+			var data = datas.pop_front()
+			acquisitions.add_child(data.exhibit)
+	
+	datas.sort_custom(func(a, b): return a.availability > b.availability)
+	
+	while !datas.is_empty():
+		var data = datas.pop_front()
+		acquisitions.add_child(data.exhibit)
+
+
 func filling_of_exhibit_requirements() -> void:
 	for exhibit in acquisitions.get_children():
 		for requirement in exhibit.essenceRequirements.get_children():
@@ -64,7 +138,15 @@ func filling_of_exhibit_requirements() -> void:
 					var repayment = min(storage.get_current(), arrear)
 					storage.change_current(-repayment)
 					requirement.change_current(repayment)
-					exhibit.completion_check()
+					
+					if exhibit.completion_check():
+						var type = str(exhibit.type)
+						exhibit.closure()
+						
+						if type == "beast":
+							organize_exhibits()
+							filling_of_exhibit_requirements()
+							return
 					#var score = collector.workshop.get_score_based_on_subtype(requirement.subtype)
 					#var token = score.get_token_based_on_subtype("demand")
 					#token.change_limit(-repayment)

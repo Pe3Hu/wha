@@ -81,6 +81,7 @@ func get_score_based_on_subtype(subtype_: String) -> Variant:
 #endregion
 
 
+#region score
 func get_essence_from_increment() -> void:
 	for storage in storages.get_children():
 		storage.apply_increment()
@@ -111,13 +112,22 @@ func update_supplies() -> void:
 		supply.set_limit(value)
 
 
-func update_demands() -> void:
+func reset_demands() -> void:
 	for score in scores.get_children():
 		var demand = score.get_token_based_on_subtype("demand")
 		var storage = get_storage_based_on_subtype(score.subtype)
-		var value = -storage.get_limit()
+		var value = -storage.get_current()
 		demand.set_limit(value)
 	
+	for token in domain.utilizations.get_children():
+		var _score = collector.workshop.get_score_based_on_subtype(token.subtype)
+		var demand = _score.get_token_based_on_subtype("demand")
+		var value = -token.get_limit()
+		demand.change_limit(value)
+
+
+func update_demands() -> void:
+	reset_demands()
 	
 	for exhibit in domain.acquisitions.get_children():
 		for requirement in exhibit.essenceRequirements.get_children():
@@ -142,3 +152,4 @@ func get_essence_from_sacrifice() -> void:
 		storage.change_current(value)
 		domain.utilizations.remove_child(token)
 		token.queue_free()
+#endregion

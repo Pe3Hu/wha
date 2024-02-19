@@ -26,16 +26,22 @@ func init_basic_setting() -> void:
 	for subtype in Global.arr.enchantment:
 		powers[subtype] = 0
 	
-	update_priorities()
+	#update_priorities()
 
 
 func update_priorities() -> void:
 	var level = collector.core.level.get_number()
-	var a  = Global.dict.level.power
+	
 	for subtype in powers:
 		var base = Global.dict.level.power[level][subtype]
 		base -= powers[subtype]
 		priorities[subtype] = max(0, base)
+	
+	if collector.opponent != null:
+		var opponent_offense = collector.opponent.forge.powers["offense"]
+		
+		if opponent_offense == 0:
+			priorities["defense"] = 0
 #endregion
 
 

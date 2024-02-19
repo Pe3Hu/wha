@@ -211,24 +211,23 @@ func set_purpose(purpose_: String) -> void:
 				if type == "enchantment":
 					collector.forge.powers[subtype] += power
 					collector.forge.update_priorities()
+					collector.opponent.forge.update_priorities()
 			#"utilization":
-				#var node = get_node("Requirements")
-				#node.visible = false
-				#node = get_node("Productions")
-				#node.visible = false
-				#node = get_node("Gifts")
-				#node.visible = false
-				#custom_minimum_size = Vector2(Global.vec.size.utilization)
+				#for sacrifice in essenceSacrifices.get_children():
+					#var _score = collector.workshop.get_score_based_on_subtype(sacrifice.subtype)
+					#var token = _score.get_token_based_on_subtype("demand")
+					#var value = sacrifice.get_limit()
+					#token.change_limit(value)
 
 
-func completion_check() -> void:
+func completion_check() -> bool:
 	for requirement in essenceRequirements.get_children():
 		var arrear = requirement.get_limit() - requirement.get_current()
 	
 		if arrear != 0:
-			return
+			return false
 	
-	closure()
+	return true
 
 
 func closure() -> void:
@@ -237,14 +236,20 @@ func closure() -> void:
 		var value = token.get_limit()
 		storage.change_increment(value)
 	
-	collector.core.level_up()
+	for token in effectGifts.get_children():
+		var storage = collector.workshop.get_storage_based_on_subtype(token.subtype)
+		var value = token.get_limit()
+		storage.change_current(value)
 	
+	collector.core.level_up()
 	
 	while effectProductions.get_child_count() > 0:
 		var token = effectProductions.get_child(0)
 		effectProductions.remove_child(token)
 		collector.forge.add_effect(token)
 	
+	if type == "beast":
+		collector
 	
 	collector.domain.acquisitions.remove_child(self)
 	queue_free()

@@ -28,11 +28,17 @@ func init_arr() -> void:
 	arr.essence.append_array(arr.element)
 	arr.field = ["ore", "seed", "gas"]
 	arr.enchantment = ["defense", "offense"]
-	arr.phase = ["growing", "preparing", "picking", "filling"]
+	arr.beast = ["common"]
+	arr.phase = ["growing", "preparing", "picking", "sorting", "filling"]
 
 
 func init_num() -> void:
 	num.index = {}
+	
+	num.limit = {}
+	num.limit.gallery = 3
+	num.limit.repeat = 3
+	num.limit.phase = arr.phase.size() - 2 + num.limit.repeat * 2
 
 
 func init_dict() -> void:
@@ -109,6 +115,15 @@ func init_inverse() -> void:
 	dict.relevance["essence"] = 1
 	dict.relevance["production"] = 3
 	dict.relevance["gift"] = 1
+	
+	dict.organize = {}
+	dict.organize["beast"] = 3
+	dict.organize["field"] = 2
+	dict.organize["enchantment"] = 1
+	
+	dict.mirror = {}
+	dict.mirror["offense"] = "defense"
+	dict.mirror["defense"] = "offense"
 
 
 func init_ritual() -> void:
@@ -292,8 +307,9 @@ func init_pack() -> void:
 	dict.criterion = {}
 	dict.criterion.type = {}
 	#dict.criterion.type["any"] = 5
-	dict.criterion.type["field"] = 3
-	dict.criterion.type["enchantment"] = 2
+	dict.criterion.type["field"] = 5
+	dict.criterion.type["enchantment"] = 3
+	dict.criterion.type["beast"] = 2
 	
 	dict.criterion.element = {}
 	#dict.criterion.element["any"] = 4
@@ -330,7 +346,7 @@ func init_level() -> void:
 
 func init_exihibit() -> void:
 	var ranks = [1, 2, 3]
-	var types = ["field", "enchantment"]
+	var types = ["beast", "field", "enchantment"]
 	dict.exihibit = {}
 	dict.exihibit.rank = {}
 	
@@ -350,8 +366,7 @@ func init_exihibit() -> void:
 								data.elements = elements
 								data.type = type
 								data.subtype = subtype
-								#var weight = dict.field.rank[rank][inputs]
-								#dict.exihibit.rank[rank][data] = weight
+								
 								dict.exihibit.rank[rank].append(data)
 					"enchantment":
 						var limits = []
@@ -383,6 +398,21 @@ func init_exihibit() -> void:
 										data.power = int(option.power)
 									
 									dict.exihibit.rank[rank].append(data)
+					"beast":
+						for inputs in dict.beast.rank[rank].input:
+							for outputs in dict.beast.rank[rank].output:
+								var n = max(inputs.size(), outputs.size())
+								var constituents = get_all_elements_constituents_based_on_size(n)
+								
+								for elements in constituents:
+										var data = {}
+										data.inputs = inputs
+										data.outputs = outputs
+										data.elements = elements
+										data.type = type
+										data.subtype = subtype
+										
+										dict.exihibit.rank[rank].append(data)
 
 
 func init_node() -> void:

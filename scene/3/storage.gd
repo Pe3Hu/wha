@@ -44,7 +44,7 @@ func get_current() -> Variant:
 
 func change_current(value_: Variant) -> void:
 	current.change_number(value_)
-	#
+	
 	#if value_ > 0:
 		#var score = proprietor.get_score_based_on_subtype(subtype)
 		#

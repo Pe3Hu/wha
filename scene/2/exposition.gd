@@ -10,6 +10,7 @@ extends MarginContainer
 
 var museum = null
 var collector = null
+var repeat = 0
 #endregion
 
 
@@ -31,6 +32,7 @@ func init_icons() -> void:
 	lap.set_attributes(input)
 	lap.custom_minimum_size = Vector2(Global.vec.size.token * 0.5)
 	
+	input.subtype = -1
 	turn.set_attributes(input)
 	turn.custom_minimum_size = Vector2(Global.vec.size.token * 0.5) 
 	
@@ -67,12 +69,22 @@ func add_gallery() -> void:
 	var gallery = Global.scene.gallery.instantiate()
 	galleries.add_child(gallery)
 	gallery.set_attributes(input)
-#endregion
+
+
+func set_opponents() -> void:
+	var first = collectors.get_child(0)
+	var second = collectors.get_child(1)
+	first.opponent = second
+	second.opponent = first
+	
+	for _collector in collectors.get_children():
+		_collector.forge.update_priorities()
+	#endregion
 
 
 func make_art() -> void:
+	set_opponents()
 	collector = collectors.get_child(0)
-	
 	#follow_phase()
 	
 	for _i in 0:
@@ -80,14 +92,24 @@ func make_art() -> void:
 
 
 func skip_all_phases() -> void:
-	for _i in Global.arr.phase.size():
+	for _i in Global.num.limit.phase:
 		follow_phase()
 
 
 #region phase
 func follow_phase() -> void:
 	var index = Global.arr.phase.find(phase.subtype)
-	index = (index + 1) % Global.arr.phase.size()
+	var shift = 1
+	
+	if phase.subtype == "picking":
+		if repeat < Global.num.limit.repeat - 1:
+			shift =- 1
+			repeat += 1
+			collector.workshop.update_demands()
+		else:
+			repeat = 0
+	
+	index = (index + shift) % Global.arr.phase.size()
 	
 	phase.subtype = Global.arr.phase[index]
 	phase.update_image()
@@ -97,9 +119,9 @@ func follow_phase() -> void:
 	
 	turn.change_number(1)
 	
-	if turn.get_number() == Global.arr.phase.size() * 2:
-		turn.set_number(0)
+	if turn.get_number() == Global.num.limit.phase:
 		lap.change_number(1)
+		turn.set_number(0)
 	
 	var func_name = phase.subtype + "_" + "phase"
 	call(func_name)
@@ -117,8 +139,12 @@ func picking_phase() -> void:
 	collector.pick_gallery()
 
 
-func filling_phase() -> void:
+func sorting_phase() -> void:
 	collector.workshop.get_essence_from_sacrifice()
+	collector.domain.organize_exhibits()
+
+
+func filling_phase() -> void:
 	collector.domain.filling_of_exhibit_requirements()
 
 
