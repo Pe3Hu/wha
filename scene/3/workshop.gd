@@ -9,6 +9,7 @@ var collector = null
 var domain = null
 var affinity = null
 var repulsion = null
+var pits = {}
 #endregion
 
 
@@ -47,6 +48,8 @@ func init_storages() -> void:
 		
 		var token = score.get_token_based_on_subtype("demand")
 		token.set_limit(0)
+		
+		pits[element] = 0
 
 
 func roll_affinity() -> void:
@@ -153,3 +156,13 @@ func get_essence_from_sacrifice() -> void:
 		domain.utilizations.remove_child(token)
 		token.queue_free()
 #endregion
+
+
+func get_current_essences() -> Dictionary:
+	var essences = {}
+	
+	for element in Global.arr.element:
+		var storage = get_storage_based_on_subtype(element)
+		essences[element] = storage.get_current()
+	
+	return essences

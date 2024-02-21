@@ -1,5 +1,5 @@
 ea4bc82a6ad023ab7ee23ee620429895
-::res://::1708323381
+::res://::1708500357
 ::res://asset/::1707495122
 default_env.tres::Environment::-1::1690116911::0::1::::<><>::
 icon.png::CompressedTexture2D::2432420761471245026::1690116911::1690116911::1::::<><>::
@@ -23,7 +23,7 @@ wha_level.json::JSON::-1::1708239332::0::1::::<><>::
 wha_pack.json::JSON::-1::1707763336::0::1::::<><>::
 wha_ritual.json::JSON::-1::1707583098::0::1::::<><>::
 ::res://asset/png/::1708331233
-::res://asset/png/beast/::1708329546
+::res://asset/png/beast/::1708331234
 common.png::CompressedTexture2D::126190541210434423::1708329242::1708331234::1::::<><>::
 legendary.png::CompressedTexture2D::5207404563512826676::1708329033::1708331234::1::::<><>::
 mythical.png::CompressedTexture2D::3682322213403375118::1708329060::1708331234::1::::<><>::
@@ -101,15 +101,15 @@ cradle.gd::GDScript::-1::1707768115::0::1::::<>MarginContainer<>::
 cradle.tscn::PackedScene::1351374215482788775::1707768329::0::1::::<><>::res://scene/1/cradle.gd
 guild.gd::GDScript::-1::1707430683::0::1::::<>MarginContainer<>::
 guild.tscn::PackedScene::6628520103918968447::1707430683::0::1::::<><>::res://scene/1/guild.gd
-::res://scene/2/::1708330558
+::res://scene/2/::1708416827
 exposition.gd::GDScript::-1::1708327842::0::1::::<>MarginContainer<>::
-exposition.tscn::PackedScene::5137792182635490111::1708330558::0::1::::<><>::res://scene/2/exposition.gd<>uid://ciw38iqel0v5a::::res://scene/0/icon.tscn
+exposition.tscn::PackedScene::5137792182635490111::1708416827::0::1::::<><>::res://scene/2/exposition.gd<>uid://ciw38iqel0v5a::::res://scene/0/icon.tscn
 museum.gd::GDScript::-1::1707431351::0::1::::<>MarginContainer<>::
 museum.tscn::PackedScene::3235909193593500470::1707431361::0::1::::<><>::res://scene/2/museum.gd
 wildlands.gd::GDScript::-1::1707430941::0::1::::<>MarginContainer<>::
 wildlands.tscn::PackedScene::2543042973040044047::1707430928::0::1::::<><>::res://scene/2/wildlands.gd
-::res://scene/3/::1708330557
-domain.gd::GDScript::-1::1708330557::0::1::::<>MarginContainer<>::
+::res://scene/3/::1708416827
+domain.gd::GDScript::-1::1708416827::0::1::::<>MarginContainer<>::
 domain.tscn::PackedScene::2770609370893161151::1708155291::0::1::::<><>::res://scene/3/domain.gd
 requirement.gd::GDScript::-1::1708063798::0::1::::<>MarginContainer<>::
 requirement.tscn::PackedScene::2940669676963144608::1708063729::0::1::::<><>::uid://cijfgbdi8yqwa::::res://scene/3/token.tscn<>res://scene/3/requirement.gd
@@ -137,5 +137,5 @@ indicator.gd::GDScript::-1::1708154472::0::1::::<>MarginContainer<>::
 indicator.tscn::PackedScene::843461219133037439::1708155291::0::1::::<><>::res://scene/5/indicator.gd
 ::res://scene/6/::1707430478
 ::res://scene/7/::1707430480
-::res://script/::1708330311
-Global.gd::GDScript::-1::1708330311::0::1::::<>Node<>::
+::res://script/::1708416593
+Global.gd::GDScript::-1::1708416593::0::1::::<>Node<>::

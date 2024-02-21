@@ -212,6 +212,9 @@ func set_purpose(purpose_: String) -> void:
 					collector.forge.powers[subtype] += power
 					collector.forge.update_priorities()
 					collector.opponent.forge.update_priorities()
+				
+				for production in essenceProductions.get_children():
+					collector.workshop.pits[production.subtype] += production.get_limit()
 			#"utilization":
 				#for sacrifice in essenceSacrifices.get_children():
 					#var _score = collector.workshop.get_score_based_on_subtype(sacrifice.subtype)
@@ -231,25 +234,98 @@ func completion_check() -> bool:
 
 
 func closure() -> void:
-	for token in essenceProductions.get_children():
-		var storage = collector.workshop.get_storage_based_on_subtype(token.subtype)
-		var value = token.get_limit()
+	for production in essenceProductions.get_children():
+		var storage = collector.workshop.get_storage_based_on_subtype(production.subtype)
+		var value = production.get_limit()
 		storage.change_increment(value)
+		collector.workshop.pits[production.subtype] -= production.get_limit()
 	
-	for token in effectGifts.get_children():
-		var storage = collector.workshop.get_storage_based_on_subtype(token.subtype)
-		var value = token.get_limit()
+	for gift in effectGifts.get_children():
+		var storage = collector.workshop.get_storage_based_on_subtype(gift.subtype)
+		var value = gift.get_limit()
 		storage.change_current(value)
 	
 	collector.core.level_up()
 	
 	while effectProductions.get_child_count() > 0:
-		var token = effectProductions.get_child(0)
-		effectProductions.remove_child(token)
-		collector.forge.add_effect(token)
+		var production = effectProductions.get_child(0)
+		effectProductions.remove_child(production)
+		collector.forge.add_effect(production)
 	
-	if type == "beast":
-		collector
+	#if type == "beast":
+	#	collector
 	
 	collector.domain.acquisitions.remove_child(self)
 	queue_free()
+
+
+func essences_compliance_check(essences_: Dictionary) -> bool:
+	for requirement in essenceRequirements.get_children():
+		var arrear = requirement.get_limit() - requirement.get_current()
+	
+		if essences_[requirement.subtype] < arrear:
+			return false
+	
+	return true
+
+
+func spend_essences_to_completion(essences_: Dictionary) -> Variant:
+	for requirement in essenceRequirements.get_children():
+		var arrear = requirement.get_limit() - requirement.get_current()
+	
+		if essences_[requirement.subtype] < arrear:
+			return null
+		else:
+			essences_[requirement.subtype] -= arrear
+	
+	return essences_
+
+
+func apply_gifts_to_essences_after_completion(essences_: Dictionary) -> void:
+	for gift in essenceGifts.get_children():
+		essences_[gift.subtype] += gift.get_limit()
+
+
+func get_number_of_essences_needed_to_completion() -> int:
+	var result = 0
+	
+	for requirement in essenceRequirements.get_children():
+		var value = requirement.get_limit() - requirement.get_current()
+		result += value
+	
+	return result
+
+
+func get_estimate_of_investment() -> int:
+	var result = 0
+	
+	for requirement in essenceRequirements.get_children():
+		var value = requirement.get_limit() - requirement.get_current()
+		var multiplier = 2
+		
+		if requirement.subtype == collector.workshop.repulsion:
+			multiplier = 3
+		if requirement.subtype == collector.workshop.affinity:
+			multiplier = 1
+		
+		result += value * multiplier
+	
+	return result
+
+
+func get_estimate_of_completion() -> int:
+	var result = 0
+	
+	match type:
+		"beast":
+			result = rank * Global.dict.estimate[type]
+		"field":
+			result += rank * Global.dict.estimate[type]
+		"enchantment":
+			result += power * Global.dict.estimate[type]
+	
+	return result
+
+
+func get_estimate() -> int:
+	return get_estimate_of_completion() - get_estimate_of_investment()

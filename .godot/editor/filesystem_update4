@@ -1,12 +1,9 @@
 res://scene/1/collector.tscn
 res://scene/5/forge.tscn
 res://scene/2/exposition.tscn
-res://scene/1/collector.gd
-res://scene/5/forge.gd
-res://scene/2/exposition.gd
-res://scene/4/exhibit.gd
-res://script/Global.gd
-res://scene/4/gallery.gd
-res://scene/3/workshop.gd
 res://scene/3/domain.gd
-res://scene/3/storage.gd
+res://scene/4/exhibit.gd
+res://scene/3/workshop.gd
+res://scene/2/exposition.gd
+res://script/Global.gd
+res://scene/1/collector.gd

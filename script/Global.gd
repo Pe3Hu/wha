@@ -113,13 +113,18 @@ func init_inverse() -> void:
 	dict.relevance["defense"] = 2
 	dict.relevance["purpose"] = 1
 	dict.relevance["essence"] = 1
-	dict.relevance["production"] = 3
+	dict.relevance["production"] = 4
 	dict.relevance["gift"] = 1
 	
 	dict.organize = {}
-	dict.organize["beast"] = 3
-	dict.organize["field"] = 2
+	dict.organize["beast"] = 6
+	dict.organize["field"] = 3
 	dict.organize["enchantment"] = 1
+	
+	dict.estimate = {}
+	dict.estimate["beast"] = 6
+	dict.estimate["field"] = 8
+	dict.estimate["enchantment"] = 1
 	
 	dict.mirror = {}
 	dict.mirror["offense"] = "defense"
