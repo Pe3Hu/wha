@@ -44,7 +44,20 @@ func add_exhibit_as_purpose(exhibit_: MarginContainer, purpose_: String) -> void
 			while exhibit_.essenceSacrifices.get_child_count() > 0:
 				var token = exhibit_.essenceSacrifices.get_child(0)
 				exhibit_.essenceSacrifices.remove_child(token)
-				box.add_child(token)
+				
+				var parent = null
+				
+				for _parent in box.get_children():
+					if _parent.subtype == token.subtype:
+						parent = _parent
+						break
+				
+				if parent == null:
+					box.add_child(token)
+				else:
+					var value = token.get_limit()
+					parent.change_limit(value)
+				
 				exhibit_.queue_free()
 		"fertilization":
 			box.add_child(exhibit_)
@@ -251,3 +264,4 @@ func filling_of_exhibit_requirements() -> void:
 	while acquisitions.get_child_count() > capacity:
 		var exhibit = acquisitions.get_child(acquisitions.get_child_count() - 1)
 		acquisitions.remove_child(exhibit)
+		exhibit.refund()

@@ -66,9 +66,6 @@ func pick_gallery() -> void:
 		var exhibit = pair[type]
 		var purpose = purposes[type]
 		domain.add_exhibit_as_purpose(exhibit, purpose)
-	
-	#for exhibit in _preference.gallery.exhibits.get_children():
-	#	domain.add_exhibit_as_purpose(exhibit, "fertilization")
 
 
 func score_gallery(gallery_: MarginContainer) -> void:

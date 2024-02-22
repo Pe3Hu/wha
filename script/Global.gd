@@ -29,7 +29,8 @@ func init_arr() -> void:
 	arr.field = ["ore", "seed", "gas"]
 	arr.enchantment = ["defense", "offense"]
 	arr.beast = ["common"]
-	arr.phase = ["growing", "preparing", "picking", "sorting", "filling"]
+	arr.phase = ["growing", "preparing", "picking", "sorting", "filling", "transferring", "reacting"]
+	arr.treasure = ["common"]
 
 
 func init_num() -> void:
@@ -44,10 +45,11 @@ func init_num() -> void:
 func init_dict() -> void:
 	init_neighbor()
 	init_inverse()
+	init_limit()
 	init_ritual()
 	init_enchantment()
-	init_beast()
-	init_field()
+	#init_beast()
+	#init_field()
 	init_pack()
 	init_level()
 	init_exihibit()
@@ -131,6 +133,34 @@ func init_inverse() -> void:
 	dict.mirror["defense"] = "offense"
 
 
+func init_limit() -> void:
+	dict.limit = {}
+	
+	var path = "res://asset/json/wha_limit.json"
+	var array = load_data(path)
+	
+	for limit in array:
+		var limits = []
+		limit.rank = int(limit.rank)
+		
+		for _limit in limit.limits.split(","):
+			limits.append(int(_limit))
+		
+		if !dict.limit.has(limit.kind):
+			dict.limit[limit.kind] = {}
+		
+		if !dict.limit[limit.kind].has(limit.rank):
+			dict.limit[limit.kind][limit.rank] = {}
+			
+		if !dict.limit[limit.kind][limit.rank].has(limit.type):
+			dict.limit[limit.kind][limit.rank][limit.type] = {}
+		
+		if !dict.limit[limit.kind][limit.rank][limit.type].has(limit.subtype):
+			dict.limit[limit.kind][limit.rank][limit.type][limit.subtype] = []
+		
+		dict.limit[limit.kind][limit.rank][limit.type][limit.subtype].append(limits)
+
+
 func init_ritual() -> void:
 	dict.ritual = {}
 	dict.ritual.index = {}
@@ -166,11 +196,9 @@ func init_ritual() -> void:
 
 func init_enchantment() -> void:
 	dict.enchantment = {}
-	dict.enchantment.limit = {}
-	dict.enchantment.effect = {}
 	
 	var exceptions = ["index", "role", "rank", "element"]
-	var path = "res://asset/json/wha_enchantment_limit.json"
+	var path = "res://asset/json/wha_enchantment.json"
 	var array = load_data(path)
 	
 	for enchantment in array:
@@ -182,93 +210,17 @@ func init_enchantment() -> void:
 			
 			if !exceptions.has(key):
 				data[key] = enchantment[key]
-				
-				if key == "limits":
-					data.limits = []
-				
-					match typeof(enchantment[key]):
-						TYPE_FLOAT:
-							data.limits.append(int(enchantment[key]))
-						TYPE_INT:
-							data.limits.append(enchantment[key])
-						TYPE_STRING:
-							for limit in enchantment[key].split(","):
-								data.limits.append(int(limit))
 		
-		if !dict.enchantment.limit.has(enchantment.rank):
-			dict.enchantment.limit[enchantment.rank] = {}
+		if !dict.enchantment.has(enchantment.rank):
+			dict.enchantment[enchantment.rank] = {}
 		
-		if !dict.enchantment.limit[enchantment.rank].has(enchantment.role):
-			dict.enchantment.limit[enchantment.rank][enchantment.role] = []
+		if !dict.enchantment[enchantment.rank].has(enchantment.role):
+			dict.enchantment[enchantment.rank][enchantment.role] = {}
 		
-		dict.enchantment.limit[enchantment.rank][enchantment.role].append(data)
-	
-	path = "res://asset/json/wha_enchantment_effect.json"
-	array = load_data(path)
-	
-	for enchantment in array:
-		var data = {}
+		if !dict.enchantment[enchantment.rank].has(enchantment.element):
+			dict.enchantment[enchantment.rank][enchantment.role][enchantment.element] = []
 		
-		for key in enchantment:
-			if typeof(enchantment[key]) == TYPE_FLOAT:
-				enchantment[key] = int(enchantment[key])
-			
-			if !exceptions.has(key):
-				data[key] = enchantment[key]
-		
-		if !dict.enchantment.effect.has(enchantment.rank):
-			dict.enchantment.effect[enchantment.rank] = {}
-		
-		if !dict.enchantment.effect[enchantment.rank].has(enchantment.role):
-			dict.enchantment.effect[enchantment.rank][enchantment.role] = {}
-		
-		if !dict.enchantment.effect[enchantment.rank].has(enchantment.element):
-			dict.enchantment.effect[enchantment.rank][enchantment.role][enchantment.element] = []
-		
-		dict.enchantment.effect[enchantment.rank][enchantment.role][enchantment.element].append(data)
-
-
-func init_beast() -> void:
-	dict.beast = {}
-	dict.beast.rank = {}
-	
-	var path = "res://asset/json/wha_beast_limit.json"
-	var array = load_data(path)
-	
-	for beast in array:
-		var limits = []
-		beast.rank = int(beast.rank)
-		
-		for limit in beast.limits.split(","):
-			limits.append(int(limit))
-		
-		if !dict.beast.rank.has(beast.rank):
-			dict.beast.rank[beast.rank] = {}
-			
-		if !dict.beast.rank[beast.rank].has(beast.type):
-			dict.beast.rank[beast.rank][beast.type] = []
-		
-		dict.beast.rank[beast.rank][beast.type].append(limits)
-
-
-func init_field() -> void:
-	dict.field = {}
-	dict.field.rank = {}
-	
-	var path = "res://asset/json/wha_field_limit.json"
-	var array = load_data(path)
-	
-	for field in array:
-		field.rank = int(field.rank)
-		var limits = []
-		
-		for limit in field.limits.split(","):
-			limits.append(int(limit))
-		
-		if !dict.field.rank.has(field.rank):
-			dict.field.rank[field.rank] = {}
-		
-		dict.field.rank[field.rank][limits] = field.weight
+		dict.enchantment[enchantment.rank][enchantment.role][enchantment.element].append(data)
 
 
 func init_pack() -> void:
@@ -351,7 +303,7 @@ func init_level() -> void:
 
 func init_exihibit() -> void:
 	var ranks = [1, 2, 3]
-	var types = ["beast", "field", "enchantment"]
+	var types = ["beast", "field", "enchantment", "treasure"]
 	dict.exihibit = {}
 	dict.exihibit.rank = {}
 	
@@ -362,7 +314,7 @@ func init_exihibit() -> void:
 			for subtype in arr[type]:
 				match type:
 					"field":
-						for inputs in dict.field.rank[rank]:
+						for inputs in dict.limit[type][rank].input.any:
 							var constituents = get_all_elements_constituents_based_on_size(inputs.size())
 							
 							for elements in constituents:
@@ -375,11 +327,10 @@ func init_exihibit() -> void:
 								dict.exihibit.rank[rank].append(data)
 					"enchantment":
 						var limits = []
-						var options = Global.dict.enchantment.limit[rank][subtype]
+						var options = Global.dict.limit[type][rank].input[subtype]
 						
 						for option in options:
-							limits.append(option.limits)
-						
+							limits.append(option)
 						
 						for inputs in limits:
 							var constituents = get_all_elements_constituents_based_on_size(inputs.size())
@@ -390,10 +341,10 @@ func init_exihibit() -> void:
 									data.elements = elements
 									data.type = type
 									data.subtype = subtype
-									#var weight = dict.field.rank[rank][inputs]
+									#var weight = dict.limit.field[rank][inputs]
 									#dict.exihibit.rank[rank][data] = weight
 									
-									options = Global.dict.enchantment.effect[rank][subtype][elements.front()]
+									options = Global.dict.enchantment[rank][subtype][elements.front()]
 									
 									for option in options:
 										data.effect = option.effect
@@ -404,8 +355,8 @@ func init_exihibit() -> void:
 									
 									dict.exihibit.rank[rank].append(data)
 					"beast":
-						for inputs in dict.beast.rank[rank].input:
-							for outputs in dict.beast.rank[rank].output:
+						for inputs in dict.limit[type][rank].input.any:
+							for outputs in dict.limit[type][rank].output.any:
 								var n = max(inputs.size(), outputs.size())
 								var constituents = get_all_elements_constituents_based_on_size(n)
 								
@@ -418,7 +369,18 @@ func init_exihibit() -> void:
 										data.subtype = subtype
 										
 										dict.exihibit.rank[rank].append(data)
-
+					"treasure":
+						for outputs in dict.limit[type][rank].output.any:
+							var constituents = get_all_elements_constituents_based_on_size(outputs.size())
+							
+							for elements in constituents:
+								var data = {}
+								data.outputs = outputs
+								data.elements = elements
+								data.type = type
+								data.subtype = subtype
+								
+								dict.exihibit.rank[rank].append(data)
 
 func init_node() -> void:
 	node.game = get_node("/root/Game")
@@ -498,9 +460,18 @@ func init_color():
 	s = 0.0
 	v = 0.5
 	color.role = {}
-	color.role.offense = Color.from_hsv(0, s, v - 0.25)
-	color.role.purpose = Color.from_hsv(270/ h, s, v)
-	color.role.defense = Color.from_hsv(130/ h, s, v + 0.25)
+	color.role.permanent = {}
+	color.role.permanent.offense = Color.from_hsv(0, s, v - 0.25)
+	color.role.permanent.purpose = Color.from_hsv(270 / h, s, v)
+	color.role.permanent.defense = Color.from_hsv(130 / h, s, v + 0.25)
+	
+	s = 0.75
+	v = 0.9
+	color.role.single = {}
+	color.role.single.offense = Color.from_hsv(0, s, v)
+	color.role.single.purpose = Color.from_hsv(270 / h, s, v)
+	color.role.single.defense = Color.from_hsv(130 / h, s, v)
+	
 
 
 func save(path_: String, data_: String):

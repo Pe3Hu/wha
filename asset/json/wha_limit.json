@@ -1,0 +1,366 @@
+[
+ {
+  "kind": "field",
+  "rank": 1,
+  "type": "input",
+  "limits": "3,1",
+  "subtype": "any"
+ },
+ {
+  "kind": "field",
+  "rank": 2,
+  "type": "input",
+  "limits": "6,3",
+  "subtype": "any"
+ },
+ {
+  "kind": "field",
+  "rank": 2,
+  "type": "input",
+  "limits": "5,2,2",
+  "subtype": "any"
+ },
+ {
+  "kind": "field",
+  "rank": 3,
+  "type": "input",
+  "limits": "10,6",
+  "subtype": "any"
+ },
+ {
+  "kind": "field",
+  "rank": 3,
+  "type": "input",
+  "limits": "8,4,4",
+  "subtype": "any"
+ },
+ {
+  "kind": "field",
+  "rank": 3,
+  "type": "input",
+  "limits": "7,3,3,3",
+  "subtype": "any"
+ },
+ {
+  "kind": "treasure",
+  "rank": 1,
+  "type": "output",
+  "limits": "3",
+  "subtype": "any"
+ },
+ {
+  "kind": "treasure",
+  "rank": 1,
+  "type": "output",
+  "limits": "2,1",
+  "subtype": "any"
+ },
+ {
+  "kind": "treasure",
+  "rank": 2,
+  "type": "output",
+  "limits": "6",
+  "subtype": "any"
+ },
+ {
+  "kind": "treasure",
+  "rank": 2,
+  "type": "output",
+  "limits": "4,2",
+  "subtype": "any"
+ },
+ {
+  "kind": "treasure",
+  "rank": 2,
+  "type": "output",
+  "limits": "3,1,1,1",
+  "subtype": "any"
+ },
+ {
+  "kind": "treasure",
+  "rank": 3,
+  "type": "output",
+  "limits": "9",
+  "subtype": "any"
+ },
+ {
+  "kind": "treasure",
+  "rank": 3,
+  "type": "output",
+  "limits": "5,4",
+  "subtype": "any"
+ },
+ {
+  "kind": "treasure",
+  "rank": 3,
+  "type": "output",
+  "limits": "4,3,2",
+  "subtype": "any"
+ },
+ {
+  "kind": "treasure",
+  "rank": 3,
+  "type": "output",
+  "limits": "3,2,2,2",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 1,
+  "type": "input",
+  "limits": "2,1",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 1,
+  "type": "input",
+  "limits": "1,1,1",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 1,
+  "type": "output",
+  "limits": "6",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 1,
+  "type": "output",
+  "limits": "3,3",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 1,
+  "type": "output",
+  "limits": "2,2,2",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 2,
+  "type": "input",
+  "limits": "3,3",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 2,
+  "type": "input",
+  "limits": "2,2,2",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 2,
+  "type": "output",
+  "limits": "6,6",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 2,
+  "type": "output",
+  "limits": "4,4,4",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 2,
+  "type": "output",
+  "limits": "3,3,3,3",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 3,
+  "type": "input",
+  "limits": "6,6",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 3,
+  "type": "input",
+  "limits": "4,4,4",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 3,
+  "type": "input",
+  "limits": "3,3,3,3",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 3,
+  "type": "output",
+  "limits": "12,12",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 3,
+  "type": "output",
+  "limits": "8,8,8",
+  "subtype": "any"
+ },
+ {
+  "kind": "beast",
+  "rank": 3,
+  "type": "output",
+  "limits": "6,6,6,6",
+  "subtype": "any"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 1,
+  "type": "input",
+  "limits": "12",
+  "subtype": "offense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 1,
+  "type": "input",
+  "limits": "8,6",
+  "subtype": "offense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 1,
+  "type": "input",
+  "limits": "7,5,5",
+  "subtype": "offense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 1,
+  "type": "input",
+  "limits": "6,4,4,4",
+  "subtype": "offense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 1,
+  "type": "input",
+  "limits": "6",
+  "subtype": "defense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 1,
+  "type": "input",
+  "limits": "4,3",
+  "subtype": "defense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 1,
+  "type": "input",
+  "limits": "4,2,2",
+  "subtype": "defense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 2,
+  "type": "input",
+  "limits": "18",
+  "subtype": "offense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 2,
+  "type": "input",
+  "limits": "11,9",
+  "subtype": "offense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 2,
+  "type": "input",
+  "limits": "13,6,6",
+  "subtype": "offense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 2,
+  "type": "input",
+  "limits": "12,5,5,5",
+  "subtype": "offense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 2,
+  "type": "input",
+  "limits": "9",
+  "subtype": "defense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 2,
+  "type": "input",
+  "limits": "6,5",
+  "subtype": "defense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 2,
+  "type": "input",
+  "limits": "5,4,4",
+  "subtype": "defense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 3,
+  "type": "input",
+  "limits": "24",
+  "subtype": "offense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 3,
+  "type": "input",
+  "limits": "12,10",
+  "subtype": "offense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 3,
+  "type": "input",
+  "limits": "11,9",
+  "subtype": "offense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 3,
+  "type": "input",
+  "limits": "10,8,8,8",
+  "subtype": "offense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 3,
+  "type": "input",
+  "limits": "12",
+  "subtype": "defense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 3,
+  "type": "input",
+  "limits": "8,7",
+  "subtype": "defense"
+ },
+ {
+  "kind": "enchantment",
+  "rank": 3,
+  "type": "input",
+  "limits": "7,6,6",
+  "subtype": "defense"
+ }
+]

@@ -28,24 +28,35 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_7paps")
 
 [node name="HBox" type="HBoxContainer" parent="."]
 layout_mode = 2
+theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Enchantments" type="HBoxContainer" parent="HBox"]
+[node name="Singles" type="HBoxContainer" parent="HBox"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Threats" type="VBoxContainer" parent="HBox/Enchantments"]
+[node name="Offenses" type="VBoxContainer" parent="HBox/Singles"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Offenses" type="VBoxContainer" parent="HBox/Enchantments"]
+[node name="Defenses" type="VBoxContainer" parent="HBox/Singles"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="Defenses" type="VBoxContainer" parent="HBox/Enchantments"]
+[node name="Permanents" type="HBoxContainer" parent="HBox"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Offenses" type="VBoxContainer" parent="HBox/Permanents"]
+layout_mode = 2
+theme_override_constants/separation = 0
+alignment = 1
+
+[node name="Defenses" type="VBoxContainer" parent="HBox/Permanents"]
 layout_mode = 2
 theme_override_constants/separation = 0
 alignment = 1

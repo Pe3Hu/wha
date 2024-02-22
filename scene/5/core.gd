@@ -48,4 +48,12 @@ func level_up() -> void:
 	if Global.dict.level.income[next_level] <= sum:
 		level.set_number(next_level)
 		#level_up()
+
+
+func get_damage(damage_: int) -> void:
+	health.update_value("current", -damage_)
+
+
+func get_heal(heal_: int) -> void:
+	health.update_value("current", -heal_)
 #endregion

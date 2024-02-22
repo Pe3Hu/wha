@@ -148,6 +148,14 @@ func filling_phase() -> void:
 	collector.domain.filling_of_exhibit_requirements()
 
 
+func transferring_phase() -> void:
+	collector.forge.fabricate_single_effects()
+
+
+func reacting_phase() -> void:
+	collector.forge.single_effects_reaction()
+
+
 func swap_collector() -> void:
 	var index = (collector.get_index() + 1) % collectors.get_child_count()
 	collector = collectors.get_child(index)

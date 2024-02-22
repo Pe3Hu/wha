@@ -9,6 +9,7 @@ var exposition = null
 var criterion = null
 var specialization = null
 var hue = null
+var treasure = false
 #endregion
 
 
@@ -42,6 +43,8 @@ func init_exhibits() -> void:
 	
 	for _i in  n:
 		add_exhibit()
+	
+	remove_exhibit_as_treasure()
 
 
 func roll_specialization(datas_: Dictionary) -> void:
@@ -75,11 +78,22 @@ func add_exhibit() -> void:
 	for data in Global.dict.exihibit.rank[input.rank]:
 		var flag = true
 		
-		match criterion:
-			"type":
-				flag = data[criterion] == specialization
-			"element":
-				flag = data.elements.front() == specialization
+		if treasure:
+			flag = data["type"] == "treasure"
+			
+			if flag:
+				match criterion:
+					"element":
+						flag = data.elements.front() == specialization
+		else:
+			match criterion:
+				"type":
+					flag = data[criterion] == specialization
+				"element":
+					flag = data.elements.front() == specialization
+			
+			if !treasure and data["type"] == "treasure":
+				flag = false
 		
 		if flag:
 			datas.append(data)
@@ -122,4 +136,14 @@ func pair_up() -> Array:
 			pairs.erase(pair)
 	
 	return pairs
+
+
+func remove_exhibit_as_treasure() -> void:
+	var exhibit = exhibits.get_children().pick_random()
+	exhibits.remove_child(exhibit)
+	exhibit.queue_free()
+	
+	treasure = true
+	add_exhibit()
+	treasure = false
 #endregion

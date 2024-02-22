@@ -114,6 +114,10 @@ layout_mode = 2
 [node name="Rank" parent="Tags/Icons" instance=ExtResource("2_dc70u")]
 layout_mode = 2
 
+[node name="Type" parent="Tags/Icons" instance=ExtResource("2_dc70u")]
+visible = false
+layout_mode = 2
+
 [node name="Subtype" parent="Tags/Icons" instance=ExtResource("2_dc70u")]
 layout_mode = 2
 

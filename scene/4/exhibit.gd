@@ -13,6 +13,7 @@ extends MarginContainer
 @onready var score = $Score
 @onready var criterionTag = $Tags/Icons/Criterion
 @onready var rankTag = $Tags/Icons/Rank
+@onready var typeTag = $Tags/Icons/Type
 @onready var subtypeTag = $Tags/Icons/Subtype
 
 var gallery = null
@@ -43,7 +44,7 @@ func init_basic_setting(input_: Dictionary) -> void:
 	init_bg_color()
 	init_requirements(input_)
 	init_gifts(input_)
-	init_sacrifices()
+	init_sacrifices(input_)
 	init_productions()
 	init_score()
 	init_tags()
@@ -104,7 +105,6 @@ func init_gifts(input_: Dictionary) -> void:
 					input.subtype = effect
 					token = Global.scene.effect.instantiate()
 					effectGifts.add_child(token)
-					
 			
 			input.limit = input_.outputs[_i]
 			token.set_attributes(input)
@@ -116,33 +116,49 @@ func init_gifts(input_: Dictionary) -> void:
 					token.count.set_number(count)
 
 
-func init_sacrifices() -> void:
-	var input = {}
-	input.proprietor = self
-	input.type = "essence"
+func init_sacrifices(input_: Dictionary) -> void:
+	var types = ["treasure", "curse"]
 	
-	if !elements.is_empty():
-		input.subtype = elements.pick_random()
-	else:
-		input.subtype = Global.arr.element.pick_random()
-	
-	var token = Global.scene.token.instantiate()
-	essenceSacrifices.add_child(token)
-	token.set_attributes(input)
-	token.set_limit(rank)
+	if !types.has(type):
+		var input = {}
+		input.proprietor = self
+		input.type = "essence"
+		input.limit = rank
+		
+		if !elements.is_empty():
+			input.subtype = elements.pick_random()
+		else:
+			input.subtype = Global.arr.element.pick_random()
+		
+		var token = Global.scene.token.instantiate()
+		essenceSacrifices.add_child(token)
+		token.set_attributes(input)
 	
 	match type:
 		"treasure":
-			token.set_limit(rank * 2)
-		"curse":
-			token.set_limit(rank * 2 + 1)
+			#add_random_elements
+			#var shuffle_elements = []
+			#shuffle_elements.append_array(Global.arr.element)
+			#shuffle_elements.shuffle()
 			
-			input.type = "threat"
-			input.subtype = "curse"
-			
-			token = Global.scene.token.instantiate()
-			threatSacrifices.add_child(token)
-			token.set_attributes(input)
+			for _i in input_.outputs.size():
+				var input = {}
+				input.proprietor = self
+				input.type = "essence"
+				input.subtype = elements[_i]
+				input.limit = input_.outputs[_i]
+				var token = Global.scene.token.instantiate()
+				essenceSacrifices.add_child(token)
+				token.set_attributes(input)
+		#"curse":
+			#token.set_limit(rank * 2 + 1)
+			#
+			#input.type = "threat"
+			#input.subtype = "curse"
+			#
+			#token = Global.scene.token.instantiate()
+			#threatSacrifices.add_child(token)
+			#token.set_attributes(input)
 
 
 func init_productions() -> void:
@@ -170,7 +186,7 @@ func init_productions() -> void:
 			"field":
 				token.set_limit(rank)
 			"enchantment":
-				token.set_bg_color(Global.color.role[subtype])
+				token.set_bg_color(Global.color.role["permanent"][subtype])
 				token.set_limit(limit)
 				
 				if count != null:
@@ -182,15 +198,22 @@ func init_tags() -> void:
 	input.type = "tag"
 	input.subtype = gallery.specialization
 	criterionTag.set_attributes(input)
-	criterionTag.custom_minimum_size = Vector2(Global.vec.size.token * 0.5) 
+	criterionTag.custom_minimum_size = Vector2(Global.vec.size.token * 0.5)
 	
 	input.subtype = rank
 	rankTag.set_attributes(input)
-	rankTag.custom_minimum_size = Vector2(Global.vec.size.token * 0.5) 
+	rankTag.custom_minimum_size = Vector2(Global.vec.size.token * 0.5)
 	
 	input.subtype = subtype
 	subtypeTag.set_attributes(input)
-	subtypeTag.custom_minimum_size = Vector2(Global.vec.size.token * 0.5) 
+	subtypeTag.custom_minimum_size = Vector2(Global.vec.size.token * 0.5)
+	
+	if gallery.specialization != type:
+		input.subtype = type
+		typeTag.set_attributes(input)
+		typeTag.custom_minimum_size = Vector2(Global.vec.size.token * 0.5)
+		typeTag.visible = true
+		
 #endregion
 
 
@@ -250,7 +273,7 @@ func closure() -> void:
 	while effectProductions.get_child_count() > 0:
 		var production = effectProductions.get_child(0)
 		effectProductions.remove_child(production)
-		collector.forge.add_effect(production)
+		collector.forge.add_effect("permanent", production)
 	
 	#if type == "beast":
 	#	collector
@@ -329,3 +352,17 @@ func get_estimate_of_completion() -> int:
 
 func get_estimate() -> int:
 	return get_estimate_of_completion() - get_estimate_of_investment()
+
+
+func refund() -> void:
+	for requirement in essenceRequirements.get_children():
+		var storage = collector.workshop.get_storage_based_on_subtype(requirement.subtype)
+		var value = requirement.get_current()
+		storage.change_current(value)
+	
+	#for sacrifice in essenceSacrifices.get_children():
+		#var storage = collector.workshop.get_storage_based_on_subtype(sacrifice.subtype)
+		#var value = sacrifice.get_limit()
+		#storage.change_current(value)
+	
+	queue_free()

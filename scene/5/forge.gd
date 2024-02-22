@@ -2,9 +2,11 @@ extends MarginContainer
 
 
 #region vars
-@onready var offenses = $HBox/Enchantments/Offenses
-@onready var defenses = $HBox/Enchantments/Defenses
-@onready var threats = $HBox/Enchantments/Threats
+@onready var permanentOffenses = $HBox/Permanents/Offenses
+@onready var permanentDefenses = $HBox/Permanents/Defenses
+@onready var singleOffenses = $HBox/Singles/Offenses
+@onready var singleDefenses = $HBox/Singles/Defenses
+#@onready var threats = $HBox/permanents/Threats
 
 var collector = null
 var workshop = null
@@ -45,6 +47,59 @@ func update_priorities() -> void:
 #endregion
 
 
-func add_effect(token_: MarginContainer) -> void:
-	var vbox = get(token_.type+"s")
-	vbox.add_child(token_)
+func add_effect(kind_: String, token_: MarginContainer) -> void:
+	var box = get(kind_ + token_.type.capitalize() + "s")
+	var parent = null
+	
+	for _parent in box.get_children():
+		if _parent.identical_check(token_):
+			parent = _parent
+			break
+	
+	if parent != null:
+		var value = token_.get_count()
+		parent.change_count(value)
+	else:
+		var input = {}
+		input.proprietor = self
+		input.type = token_.type
+		input.subtype = token_.subtype
+		input.limit = token_.get_limit()
+		input.count = token_.get_count()
+		
+		var token = Global.scene.effect.instantiate()
+		box.add_child(token)
+		token.set_attributes(input)
+		
+		token.set_bg_color(Global.color.role[kind_][input.type])
+		token.set_limit(input.limit)
+		
+		if input.count != null:
+			token.count.set_number(input.count)
+
+
+func fabricate_single_effects() -> void:
+	for type in Global.arr.enchantment:
+		var box = get("permanent" + type.capitalize() + "s")
+		
+		for token in box.get_children():
+			match type:
+				"offense":
+					collector.opponent.forge.add_effect("single", token)
+				"defense":
+					add_effect("single", token)
+
+
+func single_effects_reaction() -> void:
+	while singleOffenses.get_child_count() > 0:
+		var token = singleOffenses.get_child(0)
+		singleOffenses.remove_child(token)
+		apply_offense_token(token) 
+
+
+func apply_offense_token(token_: MarginContainer) -> void:
+	for _i in token_.get_count():
+		var damage = token_.get_limit()
+		collector.core.get_damage(damage)
+	
+	token_.queue_free()
