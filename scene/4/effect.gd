@@ -47,7 +47,6 @@ func identical_check(token_: MarginContainer) -> bool:
 			_vars.self = _vars.self.get_number()
 			_vars.other = _vars.other.get_number()
 		
-		print(_vars)
 		if _vars.other != _vars.self:
 			return false
 	

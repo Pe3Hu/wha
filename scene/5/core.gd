@@ -45,9 +45,10 @@ func level_up() -> void:
 	
 	var next_level = level.get_number() + 1
 	
-	if Global.dict.level.income[next_level] <= sum:
-		level.set_number(next_level)
-		#level_up()
+	if  Global.dict.level.income.has(next_level):
+		if Global.dict.level.income[next_level] <= sum:
+			level.set_number(next_level)
+			#level_up()
 
 
 func get_damage(damage_: int) -> void:
@@ -56,4 +57,11 @@ func get_damage(damage_: int) -> void:
 
 func get_heal(heal_: int) -> void:
 	health.update_value("current", -heal_)
+
+
+func concede_defeat() -> void:
+	if collector.exposition.loser == null:
+		collector.exposition.loser = self
+		collector.exposition.winner = collector.opponent
+		print(collector.exposition.loser)
 #endregion

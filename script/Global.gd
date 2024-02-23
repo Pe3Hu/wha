@@ -40,6 +40,7 @@ func init_num() -> void:
 	num.limit.gallery = 3
 	num.limit.repeat = 3
 	num.limit.phase = arr.phase.size() - 2 + num.limit.repeat * 2
+	num.limit.ballast = 99
 
 
 func init_dict() -> void:

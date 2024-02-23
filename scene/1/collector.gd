@@ -160,7 +160,7 @@ func score_exhibit(exhibit_: MarginContainer) -> void:
 					multiplier = 1.0 / multiplier
 					token.multiply_limit(multiplier)
 				else:
-					token.change_limit(-99)
+					token.change_limit(-Global.num.limit.ballast)
 				
 				for production in exhibit_.essenceProductions.get_children():
 					var score = workshop.get_score_based_on_subtype(production.subtype)
@@ -178,5 +178,10 @@ func score_exhibit(exhibit_: MarginContainer) -> void:
 					if demand.get_limit() > 0:
 						var value = Global.dict.relevance["essence"] * Global.dict.relevance["gift"]
 						value *= demand.get_limit() * gift.get_limit()
+						token.change_limit(value)
+				
+				match exhibit_.type:
+					"enchantment":
+						var value  = core.level.get_number() * Global.num.limit.ballast
 						token.change_limit(value)
 #endregion

@@ -23,6 +23,7 @@ func set_attributes(input_: Dictionary) -> void:
 
 
 func init_basic_setting() -> void:
+	custom_minimum_size = Vector2(Global.vec.size.token.x * 4, Global.vec.size.token.y)
 	workshop = collector.workshop
 	
 	for subtype in Global.arr.enchantment:
@@ -100,6 +101,29 @@ func single_effects_reaction() -> void:
 func apply_offense_token(token_: MarginContainer) -> void:
 	for _i in token_.get_count():
 		var damage = token_.get_limit()
-		collector.core.get_damage(damage)
+		apply_defense_token(damage)
 	
 	token_.queue_free()
+
+
+func apply_defense_token(damage_: int) -> void:
+	if singleDefenses.get_child_count() > 0:
+		var token = singleDefenses.get_child(0)
+		var limit = token.get_limit()
+		
+		match token.subtype:
+			"shadow":
+				damage_ = 0
+			"heat":
+				damage_ = max(damage_ - limit, 0)
+				collector.opponent.core.get_damage(limit)
+			"dome":
+				damage_ = max(damage_ - limit, 0)
+			"wave":
+				damage_ = max(damage_ - limit, 0)
+		token.change_count(-1)
+		
+		if token.get_count() == 0:
+			singleDefenses.remove_child(token)
+	
+	collector.core.get_damage(damage_)

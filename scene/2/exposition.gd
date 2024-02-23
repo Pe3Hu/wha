@@ -11,6 +11,8 @@ extends MarginContainer
 var museum = null
 var collector = null
 var repeat = 0
+var winner = null
+var loser = null
 #endregion
 
 
@@ -98,33 +100,34 @@ func skip_all_phases() -> void:
 
 #region phase
 func follow_phase() -> void:
-	var index = Global.arr.phase.find(phase.subtype)
-	var shift = 1
-	
-	if phase.subtype == "picking":
-		if repeat < Global.num.limit.repeat - 1:
-			shift =- 1
-			repeat += 1
-			collector.workshop.update_demands()
-		else:
-			repeat = 0
-	
-	index = (index + shift) % Global.arr.phase.size()
-	
-	phase.subtype = Global.arr.phase[index]
-	phase.update_image()
-	
-	if index == 0:
-		swap_collector()
-	
-	turn.change_number(1)
-	
-	if turn.get_number() == Global.num.limit.phase:
-		lap.change_number(1)
-		turn.set_number(0)
-	
-	var func_name = phase.subtype + "_" + "phase"
-	call(func_name)
+	if loser == null:
+		var index = Global.arr.phase.find(phase.subtype)
+		var shift = 1
+		
+		if phase.subtype == "picking":
+			if repeat < Global.num.limit.repeat - 1:
+				shift =- 1
+				repeat += 1
+				collector.workshop.update_demands()
+			else:
+				repeat = 0
+		
+		index = (index + shift) % Global.arr.phase.size()
+		
+		phase.subtype = Global.arr.phase[index]
+		phase.update_image()
+		
+		if index == 0:
+			swap_collector()
+		
+		turn.change_number(1)
+		
+		if turn.get_number() == Global.num.limit.phase:
+			lap.change_number(1)
+			turn.set_number(0)
+		
+		var func_name = phase.subtype + "_" + "phase"
+		call(func_name)
 
 
 func growing_phase() -> void:

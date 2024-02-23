@@ -46,13 +46,15 @@ func update_value(value_: String, shift_: int) -> void:
 		"current":
 			bar.value += shift_
 			
-			if bar.value < bar.min_value:
+			if bar.value <= bar.min_value:
 				bar.value = bar.min_value
+				
+				match type:
+					"health":
+						core.concede_defeat()
+				
 		"maximum":
 			bar.max_value += shift_
-	
-	if type == "health" and bar.value == 0:
-		core.knockout()
 
 
 func get_percentage() -> int:

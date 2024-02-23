@@ -28,7 +28,7 @@ func init_basic_setting() -> void:
 	acquisitions.set("theme_override_constants/separation", separation)
 	#separation = Global.vec.size.utilization#Global.vec.size.token.y - Global.vec.size.exhibit.y
 	#utilizations.set("theme_override_constants/separation", separation)
-	custom_minimum_size = Vector2(Global.vec.size.exhibit) + Vector2(Global.vec.size.token.x, 0)
+	custom_minimum_size = Vector2(Global.vec.size.exhibit) + Vector2(Global.vec.size.token.x * 7, 0)
 
 
 func add_exhibit_as_purpose(exhibit_: MarginContainer, purpose_: String) -> void:
@@ -62,8 +62,8 @@ func add_exhibit_as_purpose(exhibit_: MarginContainer, purpose_: String) -> void
 		"fertilization":
 			box.add_child(exhibit_)
 	
-	var n = 2 + acquisitions.get_child_count() + utilizations.columns#max(acquisitions.get_child_count() + 2, utilizations.get_child_count())
-	custom_minimum_size.x = n * Global.vec.size.token.x
+	#var n = 2 + acquisitions.get_child_count() + utilizations.columns#max(acquisitions.get_child_count() + 2, utilizations.get_child_count())
+	#custom_minimum_size.x = n * Global.vec.size.token.x
 #endregion
 
 
